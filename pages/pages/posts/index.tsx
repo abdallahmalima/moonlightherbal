@@ -144,6 +144,7 @@ const Product = () => {
             const imageExtension = productImage?.name.split('.').pop();
             const imagePath = product.id ? product.image : `images/${uuidv4()}.${imageExtension}`; 
             const storageRef = ref(storage, imagePath);
+            if(productImage){
             const uploadTask = uploadBytesResumable(storageRef, productImage);
             uploadTask.on('state_changed', 
               (snapshot) => {
@@ -169,6 +170,7 @@ const Product = () => {
                 });
               }
             );
+            }
                                
     }
 
@@ -250,25 +252,21 @@ const Product = () => {
     };
 
     const onCategoryChange = (e: RadioButtonChangeEvent) => {
-        let _product = { ...product };
-        _product['category'] = e.value;
+        const _product = { ...product, category: e.value };
         setProduct(_product);
     };
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
         const val = (e.target && e.target.value) || '';
-        let _product = { ...product };
-        _product[`${name}`] = val;
-
+        const _product = { ...product,[name]: val };
         setProduct(_product);
     };
 
     const onInputNumberChange = (e: InputNumberValueChangeEvent, name: string) => {
         const val = e.value || 0;
-        let _product = { ...product };
-        _product[`${name}`] = val;
-
+        const _product = { ...product,[name]: val };
         setProduct(_product);
+
     };
 
     const rightToolbarTemplate = () => {
@@ -448,7 +446,7 @@ const Product = () => {
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
                             {product && (
                                 <span>
-                                    Are you sure you want to delete <b>{product.name}</b>?
+                                    Are you sure you want to delete <b>{product.title}</b>?
                                 </span>
                             )}
                         </div>

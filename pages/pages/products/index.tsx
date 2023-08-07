@@ -151,6 +151,7 @@ const Product = () => {
             const imageExtension = productImage?.name.split('.').pop();
             const imagePath = product.id ? product.image : `images/${uuidv4()}.${imageExtension}`; 
             const storageRef = ref(storage, imagePath);
+            if(productImage){
             const uploadTask = uploadBytesResumable(storageRef, productImage);
             uploadTask.on('state_changed', 
               (snapshot) => {
@@ -176,6 +177,7 @@ const Product = () => {
                 });
               }
             );
+            }
                                
     }
 

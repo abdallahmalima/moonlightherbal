@@ -353,8 +353,6 @@ function NoSSR() {
                     className="embed-responsive-item"
                     src=""
                     id="video"
-                    allowFullScreen=""  
-                    allowscriptaccess="always"
                     allow="autoplay"
                   />
                 </div>

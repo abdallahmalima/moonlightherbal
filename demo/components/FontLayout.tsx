@@ -1,6 +1,7 @@
 import React from "react";
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import Image from "next/image";
 
 const FontLayout=function getLayout(page:any) {
     const pathname=usePathname()
@@ -12,7 +13,7 @@ const FontLayout=function getLayout(page:any) {
   <meta content="" name="keywords" />
   <meta content="" name="description" />
   {/* Favicon */}
-  <link href="img/favicon.ico" rel="icon" />
+  <link href="/img/favicon.ico" rel="icon" />
   {/* Google Web Fonts */}
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
@@ -30,18 +31,26 @@ const FontLayout=function getLayout(page:any) {
     rel="stylesheet"
   />
   {/* Libraries Stylesheet */}
-  <link href="lib/animate/animate.min.css" rel="stylesheet" />
-  <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
+  <link href="/lib/animate/animate.min.css" rel="stylesheet" />
+  <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
   {/* Customized Bootstrap Stylesheet */}
-  <link href="css/bootstrap.min.css" rel="stylesheet" />
+  <link href="/css/bootstrap.min.css" rel="stylesheet" />
   {/* Template Stylesheet */}
-  <link href="css/style.css" rel="stylesheet" />
+  <link href="/css/style.css" rel="stylesheet" />
   {/* Navbar Start */}
   <div className="container-fluid bg-white sticky-top">
     <div className="container">
       <nav className="navbar navbar-expand-lg bg-white navbar-light py-2 py-lg-0">
         <a href="index.html" className="navbar-brand">
-          <img className="img-fluid" src="img/logo.png" alt="Logo" />
+          <Image
+            src="/img/logo.png"
+            width={0}
+            height={0}
+            sizes="100vw"
+            style={{ width: '100%', height: 'auto' }} // optional
+            alt="Logo"
+            className="img-fluid"
+            />
         </a>
         <button
           type="button"
@@ -54,27 +63,12 @@ const FontLayout=function getLayout(page:any) {
         <div className="collapse navbar-collapse" id="navbarCollapse">
           <div className="navbar-nav ms-auto">
             <Link href="/" className={`nav-item nav-link ${pathname==='/'&&'active'}`}>Home</Link>
-            <Link href="/about" className={`nav-item nav-link ${pathname==='/about' && 'active'}`}>About</Link>
             <Link href="/products" className={`nav-item nav-link ${pathname==='/products' && 'active'}`}> Products</Link>
-            <Link href="/store" className={`nav-item nav-link ${pathname==='/store' && 'active'}`}> Store</Link>
-            <div className="nav-item dropdown">
-              <Link href="#" data-bs-toggle="dropdown" className={
-                `dropdown-toggle nav-link 
-                ${(pathname==='/blog' || pathname==='/testmonial') && 'active'
-                }`}> Pages</Link>
-              <div className="dropdown-menu bg-light rounded-0 m-0">
-                <Link href="/blog" className="dropdown-item">Blog Article</Link>
-                <Link href="/testmonial" className="dropdown-item">Testimonial</Link>
-                
-              </div>
-            </div>
+            <Link href="/blog" className={`nav-item nav-link ${pathname==='/blog' && 'active'}`}> Blog</Link>
+            <Link href="/about" className={`nav-item nav-link ${pathname==='/about' && 'active'}`}>About</Link>
             <Link href="/contact" className={`nav-item nav-link ${pathname==='/contact' && 'active'}`}> Contact</Link>
           </div>
-          <div className="border-start ps-4 d-none d-lg-block">
-            <button type="button" className="btn btn-sm p-0">
-              <i className="fa fa-search" />
-            </button>
-          </div>
+
         </div>
       </nav>
     </div>
@@ -216,11 +210,11 @@ const FontLayout=function getLayout(page:any) {
   {/* Template Javascript */}
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/wow/wow.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="/lib/wow/wow.min.js"></script>
+    <script src="/lib/easing/easing.min.js"></script>
+    <script src="/lib/waypoints/waypoints.min.js"></script>
+    <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="/js/main.js"></script>
         </React.Fragment>
     );
   };

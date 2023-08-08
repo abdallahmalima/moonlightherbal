@@ -5,13 +5,13 @@ import React from 'react';
 function BlogItem({isHome=false,isDetail=false}) {
     return (
         <>
-                 <div
+                 {isHome &&<div
               className="section-title text-center mx-auto wow fadeInUp"
               data-wow-delay="0.1s"
               style={{ maxWidth: 500 }}
             >
-              {isHome && <h2 className=" fw-medium fst-italic text-primary">Featured Article</h2>}
-            </div>
+               <h2 className=" fw-medium fst-italic text-primary">Featured Article</h2>
+            </div>}
                <div className="row g-5 p-3 p-lg-7 justify-content-center">
               <div className="col-lg-5  wow fadeIn" data-wow-delay="0.1s">
 

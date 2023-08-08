@@ -5,8 +5,7 @@ function AboutUs({isHome=true,sectionId}) {
     return (
         <>
               <div
-              className="section-title text-center mx-auto wow fadeInUp"
-              data-wow-delay="0.1s"
+              className="section-title text-center mx-auto"
               style={{ maxWidth: 500 }}
             >
               {isHome && (<>

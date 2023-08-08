@@ -1,9 +1,21 @@
 import Image from 'next/image';
 import React from 'react';
 
-function AboutUs({sectionId}) {
+function AboutUs({isHome=true,sectionId}) {
     return (
         <>
+              <div
+              className="section-title text-center mx-auto wow fadeInUp"
+              data-wow-delay="0.1s"
+              style={{ maxWidth: 500 }}
+            >
+              {isHome && (<>
+              <h2 className=" fw-medium fst-italic text-primary">About Moonlightherbal </h2>
+              <h1 className="display-6">We Are the Leading Herbal Clinic in Africa</h1>
+              </>
+              )}
+            </div>
+               
         <div id={sectionId} className="container-xxl py-5">
           <div className="container">
             <div className="row g-5">
@@ -56,12 +68,6 @@ function AboutUs({sectionId}) {
                 </div>
               </div>
               <div className="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                <div className="section-title">
-                  <p className="fs-5 fw-medium fst-italic text-primary">About Us</p>
-                  <h1 className="display-6">
-                    The success history of TEA House in 25 years
-                  </h1>
-                </div>
                 <div className="row g-3 mb-4">
                   <div className="col-sm-4">
                      <Image
@@ -80,6 +86,10 @@ function AboutUs({sectionId}) {
                     <p className="mb-0">
                       Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit.
                       Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit
+                      Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit.
+                      Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit
+                      Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit.
+                      Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit
                     </p>
                   </div>
                 </div>
@@ -88,6 +98,10 @@ function AboutUs({sectionId}) {
                   <div className="col-sm-8">
                     <h5>Daily use of a cup of tea is good for your health</h5>
                     <p className="mb-0">
+                      Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit.
+                      Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit
+                      Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit.
+                      Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit
                       Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit.
                       Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit
                     </p>

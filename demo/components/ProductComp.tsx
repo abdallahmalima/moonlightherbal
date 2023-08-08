@@ -13,6 +13,7 @@ function ProductComp({isHome=false}) {
               style={{ maxWidth: 500 }}
             >
               <h2 className=" fw-medium fst-italic text-primary">Our Products</h2>
+              <h1 className="display-6">Best herbal Products</h1>
             </div>
             <div className="row g-4">
               <ProductItem/>

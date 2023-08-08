@@ -17,8 +17,8 @@ function HeaderItem({title,image,isActive=false}:HeaderItemType) {
                    src={image}
                     width={0}
                     height={0}
-                    sizes="100vw"
-                    style={{ width: '100%', height: 'auto' }} // optional
+                    sizes="300vw"
+                    style={{ width: '100%', height: '100%' }} // optional
                     alt="Image"
                     />
                 <div className="carousel-caption">

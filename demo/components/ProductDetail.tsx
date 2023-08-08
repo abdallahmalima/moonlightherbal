@@ -4,28 +4,10 @@ import React from 'react';
 function ProductDetail() {
     return (
         <>
-              <div className="d-flex gap-5 px-5 justify-content-center wow fadeInUp" data-wow-delay="0.1s">
+              <div className="d-lg-flex  gap-2 px-3 justify-content-center wow fadeInUp" data-wow-delay="0.1s">
+             
                
-                <div className="col-lg-3 wow fadeIn" data-wow-delay="0.5s">
-                <div className="section-title">
-                  <h2 className="display-6">Inatibu</h2>
-                </div>
-                <ul>
-                    <li className="mb-2">
-                    Kifafa
-                    </li>
-                    <li className="mb-2">
-                    Malaria
-                    </li>
-                    <li className="mb-2">
-                    Miguu kuvimba
-                    </li>
-                </ul>
-               
-                
-               
-              </div>
-              <div className="col-lg-4 store-item position-relative text-center">
+              <div className="col-lg-5  order-lg-2 store-item position-relative text-center">
                   <Image
                     src="/img/store-product-1.jpg"
                     width={0}
@@ -51,7 +33,28 @@ function ProductDetail() {
                     <h4 className="text-primary">$19.00</h4>
                   </div>
                 </div>
-              <div className="col-lg-3 wow fadeIn" data-wow-delay="0.5s">
+
+                <div className="col-lg-3  order-lg-1  wow fadeIn" data-wow-delay="0.5s">
+                <div className="section-title">
+                  <h2 className="display-6">Inatibu Magonjwa Yafuatayo</h2>
+                </div>
+                <ul>
+                    <li className="mb-2">
+                    Kifafa
+                    </li>
+                    <li className="mb-2">
+                    Malaria
+                    </li>
+                    <li className="mb-2">
+                    Miguu kuvimba
+                    </li>
+                </ul>
+               
+                
+               
+              </div>
+             
+              <div className="col-lg-3  order-lg-3  wow fadeIn" data-wow-delay="0.5s">
                 <div className="section-title">
                   <h2 className="display-6">Matumizi</h2>
                 </div>

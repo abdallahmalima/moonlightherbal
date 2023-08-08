@@ -5,7 +5,7 @@ import React from 'react';
 function BlogItem({isHome=false,isDetail=false}) {
     return (
         <>
-               <div className="row g-5 justify-content-center">
+               <div className="row g-5 p-4 justify-content-center">
               <div className="col-lg-5  wow fadeIn" data-wow-delay="0.1s">
 
                 <Image

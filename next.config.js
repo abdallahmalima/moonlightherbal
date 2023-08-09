@@ -8,6 +8,16 @@ const nextConfig = {
         // !! WARN !!
         ignoreBuildErrors: true,
       },
+      images: {
+        remotePatterns: [
+          {
+            protocol: 'https',
+            hostname: 'firebasestorage.googleapis.com',
+            port: '',
+            pathname: '/v0/b/admin-dashboard-90edf.appspot.com/**',
+          },
+        ],
+      },
 };
 
 module.exports = nextConfig;

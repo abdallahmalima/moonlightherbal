@@ -1,8 +1,18 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { type } from 'os';
 import React from 'react';
 
-function BlogItem({isHome=false,isDetail=false}) {
+type BlogItemType={
+  isHome?:boolean;
+  isDetail?:boolean;
+  id:string
+  title:string;
+  description:string;
+  image:string;
+}
+
+function BlogItem({isHome=false,isDetail=false,id,title,description,image}:BlogItemType) {
     return (
         <>
                  {isHome &&<div
@@ -16,7 +26,7 @@ function BlogItem({isHome=false,isDetail=false}) {
               <div className="col-lg-5  wow fadeIn" data-wow-delay="0.1s">
 
                 <Image
-                    src="/img/article.jpg"
+                    src={image}
                     width={0}
                     height={0}
                     sizes="100vw"
@@ -27,21 +37,14 @@ function BlogItem({isHome=false,isDetail=false}) {
               </div>
               <div className="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
                 <div className="section-title">
-                  <h2 className="display-6">The history of tea leaf in the world</h2>
+                  <h2 className="display-6">{title}</h2>
                 </div>
                 <p className="mb-4">
-                  Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu
-                  diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet
-                  lorem sit clita duo justo magna dolore erat amet
-                </p>
-                <p className="mb-4">
-                  Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat
-                  ipsum et lorem et sit, sed stet lorem sit clita duo justo magna.
-                  Tempor erat elitr rebum at clita.
+                  {description}
                 </p>
                
                {!isDetail && 
-                  <Link href="/blog/slug-one" className="btn btn-light rounded-pill py-3 px-5 text-primary">Read More</Link>
+                  <Link href={`/blog/${id}`} className="btn btn-light rounded-pill py-3 px-5 text-primary">Read More</Link>
                 }
               </div>
               {isHome &&<div className="col-12 text-center wow fadeInUp" data-wow-delay="0.1s">

@@ -19,15 +19,25 @@ const AppMenu = () => {
             items: [
               
                 {
-                    label: 'Product',
+                    label: 'Products',
                     icon: 'pi pi-fw pi-pencil',
                     to: '/pages/products'
                 },
 
                 {
-                    label: 'Post',
+                    label: 'Posts',
                     icon: 'pi pi-fw pi-pencil',
                     to: '/pages/posts'
+                },
+                {
+                    label: 'Headers',
+                    icon: 'pi pi-fw pi-pencil',
+                    to: '/pages/headers'
+                },
+                {
+                    label: 'Testimonials',
+                    icon: 'pi pi-fw pi-pencil',
+                    to: '/pages/testimonials'
                 },
             ]
         },

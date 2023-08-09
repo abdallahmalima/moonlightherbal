@@ -24,28 +24,22 @@ import { onAuthStateChanged, signOut } from 'firebase/auth';
 
 
 const Product = () => {
-    let emptyProduct: Demo.Product = {
+    let emptyProduct: Demo.Post = {
         id: '',
-        name: '',
+        title: '',
         image: '',
-        description: '',
-        category: '',
-        price: 0,
-        quantity: 0,
-        rating: 0,
-        inventoryStatus: 'INSTOCK'
     };
     const [productImage, setProductImage] = useState<File | null>(null);
-    const [products, setProducts] = useState<Demo.Product[]>([]);
+    const [products, setProducts] = useState<Demo.Post[]>([]);
     const [productDialog, setProductDialog] = useState(false);
     const [deleteProductDialog, setDeleteProductDialog] = useState(false);
     const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
-    const [product, setProduct] = useState<Demo.Product>(emptyProduct);
-    const [selectedProducts, setSelectedProducts] = useState<Demo.Product[]>([]);
+    const [product, setProduct] = useState<Demo.Post>(emptyProduct);
+    const [selectedProducts, setSelectedProducts] = useState<Demo.Post[]>([]);
     const [submitted, setSubmitted] = useState(false);
     const [globalFilter, setGlobalFilter] = useState('');
     const toast = useRef<Toast>(null);
-    const dt = useRef<DataTable<Demo.Product[]>>(null);
+    const dt = useRef<DataTable<Demo.Post[]>>(null);
     const fileUploadRef = useRef<FileUpload>(null);
     
 
@@ -56,7 +50,9 @@ const Product = () => {
     }, []);
 
     const loadProducts=()=>{
-        const productRef=collection(FIRESTORE_DB,'products')
+        const createdById = FIREBASE_AUTH.currentUser?.uid || ''
+        console.log(createdById)
+        const productRef=collection(FIRESTORE_DB,'headers')
         const subscriber=onSnapshot(productRef,{
             next:(snapshot)=>{
               const products:any=[];
@@ -106,16 +102,14 @@ const Product = () => {
     };
 
     const handleSaveProduct=async (downloadURL:string)=>{
-        if (product.name.trim()) {
+        if (product.title?.trim()) {
             let _products = [...products];
             let _product = { ...product };
             if (product.id) {
     
-                 const ref=doc(FIRESTORE_DB,`products/${product.id}`)
+                 const ref=doc(FIRESTORE_DB,`headers/${product.id}`)
                  await updateDoc(ref,{
-                    name:_product.name,
-                    price:_product.price,
-                    description:_product.description,
+                    title:_product.title,
                     image:downloadURL,
                  })
                  loadProducts()
@@ -123,11 +117,8 @@ const Product = () => {
             } else {
                 if(downloadURL.length>0){
                     const createdById=FIREBASE_AUTH.currentUser?.uid || ''
-                    console.log("mmmmmmmmmmmmmmmmmmmmm",createdById)
-                    const doc=await addDoc(collection(FIRESTORE_DB,'products'),{
-                        name:_product.name,
-                        description:_product.description,
-                        price:_product.price,
+                    const doc=await addDoc(collection(FIRESTORE_DB,'headers'),{
+                        title:_product.title,
                         image:downloadURL,
                         createdBy:createdById
                      })
@@ -206,7 +197,7 @@ const Product = () => {
 
     const deleteProduct = () => {
         
-        const reff=doc(FIRESTORE_DB,`products/${product.id}`)
+        const reff=doc(FIRESTORE_DB,`headers/${product.id}`)
         deleteDoc(reff)
 
     const storage = getStorage();
@@ -259,25 +250,21 @@ const Product = () => {
     };
 
     const onCategoryChange = (e: RadioButtonChangeEvent) => {
-        let _product = { ...product };
-        _product['category'] = e.value;
+        const _product = { ...product, category: e.value };
         setProduct(_product);
     };
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
         const val = (e.target && e.target.value) || '';
-        let _product = { ...product };
-        _product[`${name}`] = val;
-
+        const _product = { ...product,[name]: val };
         setProduct(_product);
     };
 
     const onInputNumberChange = (e: InputNumberValueChangeEvent, name: string) => {
         const val = e.value || 0;
-        let _product = { ...product };
-        _product[`${name}`] = val;
-
+        const _product = { ...product,[name]: val };
         setProduct(_product);
+
     };
 
     const rightToolbarTemplate = () => {
@@ -302,11 +289,11 @@ const Product = () => {
         );
     };
 
-    const nameBodyTemplate = (rowData: Demo.Product) => {
+    const titleBodyTemplate = (rowData: Demo.Post) => {
         return (
             <>
-                <span className="p-column-title">Name</span>
-                {rowData.name}
+                <span className="p-column-title">Title</span>
+                {rowData.title}
             </>
         );
     };
@@ -320,11 +307,11 @@ const Product = () => {
         );
     };
 
-    const priceBodyTemplate = (rowData: Demo.Product) => {
+    const descriptionBodyTemplate = (rowData: Demo.Post) => {
         return (
             <>
-                <span className="p-column-title">Price</span>
-                {formatCurrency(rowData.price as number)}
+                <span className="p-column-title">Description</span>
+                {rowData.description}
             </>
         );
     };
@@ -356,15 +343,6 @@ const Product = () => {
         );
     };
 
-    const descriptionBodyTemplate = (rowData: Demo.Post) => {
-        return (
-            <>
-                <span className="p-column-title">Description</span>
-                {rowData.description}
-            </>
-        );
-    };
-
 
     const actionBodyTemplate = (rowData: Demo.Product) => {
         return (
@@ -384,7 +362,6 @@ const Product = () => {
             </span>
         </div>
     );
-    
 
     const productDialogFooter = (
         <>
@@ -431,31 +408,17 @@ const Product = () => {
                     >
                         <Column selectionMode="multiple" headerStyle={{ width: '4rem' }}></Column>
                         <Column header="Image" body={imageBodyTemplate}></Column>
-                        <Column field="name" header="Name" sortable body={nameBodyTemplate} headerStyle={{ minWidth: '15rem' }}></Column>
-                        <Column field="description" header="description" body={descriptionBodyTemplate} sortable></Column>
-                        <Column field="price" header="Price" body={priceBodyTemplate} sortable></Column>
+                        <Column field="title" header="title" sortable body={titleBodyTemplate} headerStyle={{ minWidth: '15rem' }}></Column>
                         <Column body={actionBodyTemplate} headerStyle={{ minWidth: '10rem' }}></Column>
                     </DataTable>
                     <Dialog visible={productDialog} style={{ width: '450px' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
                         {product.image && <img src={`${product.image}`} alt={product.image} width="150" className="mt-0 mx-auto mb-5 block shadow-2" />}
                         <div className="field">
-                            <label htmlFor="name">Name</label>
-                            <InputText id="name" value={product.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && !product.name })} />
-                            {submitted && !product.name && <small className="p-invalid">Name is required.</small>}
+                            <label htmlFor="title">Title</label>
+                            <InputText id="title" value={product.title} onChange={(e) => onInputChange(e, 'title')} required autoFocus className={classNames({ 'p-invalid': submitted && !product.title })} />
+                            {submitted && !product.title && <small className="p-invalid">Title is required.</small>}
                         </div>
 
-                        <div className="field">
-                            <label htmlFor="description">Description</label>
-                            <InputTextarea id="description" value={product.description} onChange={(e) => onInputChange(e, 'description')} required rows={3} cols={20} />
-                        </div>
-                        
-                        <div className="formgrid grid">
-                            <div className="field col">
-                                <label htmlFor="price">Price</label>
-                                <InputNumber id="price" value={product.price} onValueChange={(e) => onInputNumberChange(e, 'price')} mode="currency" currency="USD" locale="en-US" />
-                            </div>
-                           
-                        </div>
                         <div className="field">
                             <label htmlFor="image">Image</label>
                             <FileUpload 
@@ -475,7 +438,7 @@ const Product = () => {
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
                             {product && (
                                 <span>
-                                    Are you sure you want to delete <b>{product.name}</b>?
+                                    Are you sure you want to delete <b>{product.title}</b>?
                                 </span>
                             )}
                         </div>

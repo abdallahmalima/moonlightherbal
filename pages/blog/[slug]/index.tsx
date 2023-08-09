@@ -2,9 +2,22 @@ import React from 'react';
 import FontLayout from '../../../demo/components/FontLayout';
 import BlogItem from '../../../demo/components/BlogItem';
 import BlogComp from '../../../demo/components/BlogComp';
+import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
+import { FIRESTORE_DB } from '../../../firebase.config';
 
+const getBlog= async (slug:string) => {
+  const blogRef = doc(FIRESTORE_DB, 'posts', slug);
+  const blogSnapshot = await getDoc(blogRef);
 
-function BlogDetail() {
+  if (blogSnapshot.exists()) {
+    return { id: blogSnapshot.id, ...blogSnapshot.data() };
+  } else {
+    return {};
+  }
+};
+
+function BlogDetail({blog}) {
+  console.log(blog)
     return (
       <>
         {/* Page Header Start */}
@@ -30,10 +43,44 @@ function BlogDetail() {
           </div>
         </div>
         {/* Page Header End */}
-        <BlogItem isDetail={true}/>
+        <BlogItem
+        id={blog.id}
+        title={blog.title}
+        description={blog.description}
+        image={blog.image}
+         isDetail={true}
+         />
 </>
        
     );
 }
 BlogDetail.getLayout = FontLayout
+
+
+export async function getServerSideProps(context) {
+  try {
+    const { params } = context;
+    const { slug } = params;
+
+
+    const blog =  await getBlog (slug);
+
+    // Log the fetched data on the server side
+    console.log('Fetched data:', blog);
+
+    return {
+      props: {
+        blog,
+      },
+    };
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return {
+      props: {
+        blog: null,
+      },
+    };
+  }
+}
+
 export default BlogDetail;

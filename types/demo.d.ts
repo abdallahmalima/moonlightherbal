@@ -81,6 +81,22 @@ declare namespace Demo {
         image?: string;
     }
 
+    interface Testimonial {
+        id?: string;
+        name?: string;
+        description?: string;
+        profession?: string;
+        image?: string;
+    }
+
+    interface Testimonial {
+        id?: string;
+        name?: string;
+        description?: string;
+        profession?: string;
+        image?: string;
+    }
+
     
 
     interface Member {

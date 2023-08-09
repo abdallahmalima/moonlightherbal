@@ -1,8 +1,24 @@
 import React from 'react';
 import FontLayout from '../../demo/components/FontLayout';
 import BlogComp from '../../demo/components/BlogComp';
+import { collection, getDocs } from 'firebase/firestore';
+import { FIRESTORE_DB } from '../../firebase.config';
 
-function Blog() {
+const getBlogs = async () => {
+    const products:any=[];
+    const productRef=collection(FIRESTORE_DB,'posts')
+    const querySnapshot = await getDocs(productRef);
+    querySnapshot.forEach((doc)=>{
+      products.push({
+        id:doc.id,
+        ...doc.data()
+      })
+    })
+  
+      return products
+  }
+
+function Blog({blogs}) {
     return (
         <>
         {/* Page Header Start */}
@@ -28,10 +44,33 @@ function Blog() {
           </div>
         </div>
         {/* Page Header End */}
-        <BlogComp/>
+        <BlogComp blogs={blogs}/>
       </>
        
     );
 }
 Blog.getLayout = FontLayout
+
+export async function getServerSideProps() {
+    try {
+      const blogs =  await getBlogs();
+  
+      // Log the fetched data on the server side
+      console.log('Fetched data:', blogs);
+  
+      return {
+        props: {
+          blogs,
+        },
+      };
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      return {
+        props: {
+          blogs: null,
+        },
+      };
+    }
+  }
+
 export default Blog;

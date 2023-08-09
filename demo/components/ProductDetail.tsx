@@ -1,15 +1,26 @@
 import Image from 'next/image';
 import React from 'react';
 
-function ProductDetail() {
+
+type ProductItemType={
+    isHome?:boolean;
+    isDetail?:boolean;
+    id:string
+    name:string;
+    price:string
+    description:string;
+    image:string;
+  }
+
+function ProductDetail({id,name,description,price,image}:ProductItemType) {
     return (
         <>
-              <div className="d-lg-flex  gap-2 px-3 justify-content-center wow fadeInUp" data-wow-delay="0.1s">
+              <div className="d-lg-flex  gap-5 px-3 justify-content-center wow fadeInUp" data-wow-delay="0.1s">
              
                
               <div className="col-lg-5  order-lg-2 store-item position-relative text-center">
                   <Image
-                    src="/img/store-product-1.jpg"
+                    src={image}
                     width={0}
                     height={0}
                     sizes="100vw"
@@ -25,12 +36,11 @@ function ProductDetail() {
                       <small className="fa fa-star text-primary" />
                       <small className="fa fa-star text-primary" />
                     </div>
-                    <h4 className="mb-3">Nature close tea</h4>
+                    <h4 className="mb-3">{name}</h4>
                     <p>
-                      Aliqu diam amet diam et eos. Clita erat ipsum lorem erat ipsum
-                      lorem sit sed
+                      {description}
                     </p>
-                    <h4 className="text-primary">$19.00</h4>
+                    <h4 className="text-primary">Tsh{price}</h4>
                   </div>
                 </div>
 

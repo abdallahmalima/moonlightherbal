@@ -3,9 +3,21 @@ import FontLayout from '../../../demo/components/FontLayout';
 import BlogItem from '../../../demo/components/BlogItem';
 import BlogComp from '../../../demo/components/BlogComp';
 import ProductDetail from '../../../demo/components/ProductDetail';
+import { doc, getDoc } from 'firebase/firestore';
+import { FIRESTORE_DB } from '../../../firebase.config';
 
+const getProduct= async (slug:string) => {
+  const productRef = doc(FIRESTORE_DB, 'products', slug);
+  const productSnapshot = await getDoc(productRef);
 
-function BlogDetail() {
+  if (productSnapshot.exists()) {
+    return { id: productSnapshot.id, ...productSnapshot.data() };
+  } else {
+    return {};
+  }
+};
+
+function ProductSingle({product}:any) {
     return (
       <>
         {/* Page Header Start */}
@@ -31,10 +43,43 @@ function BlogDetail() {
           </div>
         </div>
         {/* Page Header End */}
-        <ProductDetail/>
+        <ProductDetail
+        id={product.id}
+        name={product.name}
+        description={product.description}
+        price={product.price}
+        image={product.image}
+        />
 </>
        
     );
 }
-BlogDetail.getLayout = FontLayout
-export default BlogDetail;
+ProductSingle.getLayout = FontLayout
+
+export async function getServerSideProps(context) {
+  try {
+    const { params } = context;
+    const { slug } = params;
+
+
+    const product =  await getProduct (slug);
+
+    // Log the fetched data on the server side
+    console.log('Fetched data:', product);
+
+    return {
+      props: {
+        product,
+      },
+    };
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return {
+      props: {
+        product: null,
+      },
+    };
+  }
+}
+
+export default  ProductSingle;

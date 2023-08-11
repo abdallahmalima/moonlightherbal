@@ -1,10 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Image from "next/image";
+import { collection, limit, onSnapshot, query } from "firebase/firestore";
+import { FIRESTORE_DB } from "../../firebase.config";
 
 const FontLayout=function getLayout(page:any) {
     const pathname=usePathname()
+
+    const [contact,setContact]=useState({})
+    useEffect(() => {
+        const unsubscribe=loadLatestContact()
+    
+          return ()=>{unsubscribe()}
+    }, []);
+
+    const loadLatestContact=()=>{
+        const productRef=collection(FIRESTORE_DB,'contact')
+        const q = query(productRef, limit(1));
+        const subscriber=onSnapshot(q,{
+            next:(snapshot)=>{
+              snapshot.docs.forEach((doc)=>{
+                setContact({
+                  id:doc.id,
+                  ...doc.data()
+                })
+                
+              })
+              
+            }
+          })
+    
+          return subscriber
+    }
+    
+
     return (
         <React.Fragment>
            <meta charSet="utf-8" />
@@ -88,15 +118,15 @@ const FontLayout=function getLayout(page:any) {
           <h4 className="text-primary mb-4">Our Office</h4>
           <p className="mb-2">
             <i className="fa fa-map-marker-alt text-primary me-3" />
-            123 Street, New York, USA
+            {contact.street},  {contact.region}
           </p>
           <p className="mb-2">
             <i className="fa fa-phone-alt text-primary me-3" />
-            +012 345 67890
+            {contact.contact1}
           </p>
           <p className="mb-2">
             <i className="fa fa-envelope text-primary me-3" />
-            info@example.com
+            {contact.email1}
           </p>
           <div className="d-flex pt-3">
             <a
@@ -127,21 +157,11 @@ const FontLayout=function getLayout(page:any) {
         </div>
         <div className="col-lg-3 col-md-6">
           <h4 className="text-primary mb-4">Quick Links</h4>
-          <a className="btn btn-link" href="">
-            About Us
-          </a>
-          <a className="btn btn-link" href="">
-            Contact Us
-          </a>
-          <a className="btn btn-link" href="">
-            Our Services
-          </a>
-          <a className="btn btn-link" href="">
-            Terms &amp; Condition
-          </a>
-          <a className="btn btn-link" href="">
-            Support
-          </a>
+          <Link href="/about" className="btn btn-link"> About Us</Link>
+          <Link href="/contact" className="btn btn-link">  Contact Us</Link>
+          <Link href="/blog" className="btn btn-link">  Blog</Link>
+          <Link href="/products" className="btn btn-link">   Products</Link>
+          <Link href="/" className="btn btn-link">   Home</Link>
         </div>
         <div className="col-lg-3 col-md-6">
           <h4 className="text-primary mb-4">Business Hours</h4>
@@ -176,25 +196,15 @@ const FontLayout=function getLayout(page:any) {
   {/* Copyright Start */}
   <div className="container-fluid copyright py-4">
     <div className="container">
-      <div className="row">
+      <div className="row justify-content-center">
         <div className="col-md-6 text-center text-md-start mb-3 mb-md-0">
           ©{" "}
           <a className="fw-medium" href="#">
-            Your Site Name
+            www.moonlightherbal.com
           </a>
           , All Right Reserved.
         </div>
-        <div className="col-md-6 text-center text-md-end">
-          {/*/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. *** /*/}
-          Designed By{" "}
-          <a className="fw-medium" href="https://htmlcodex.com">
-            HTML Codex
-          </a>{" "}
-          Distributed By{" "}
-          <a className="fw-medium" href="https://themewagon.com">
-            ThemeWagon
-          </a>
-        </div>
+      
       </div>
     </div>
   </div>

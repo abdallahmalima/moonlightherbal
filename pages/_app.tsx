@@ -15,10 +15,9 @@ type Props = AppProps & {
 
 export default function MyApp({ Component, pageProps }: Props) {
     if (Component.getLayout) {
-        console.log(pageProps)
         return <LayoutProvider>{Component.getLayout(<Component {...pageProps} />)}</LayoutProvider>;
     } else {
-        console.log("Noooo")
+       
         return (
             <LayoutProvider>
                 <Layout>

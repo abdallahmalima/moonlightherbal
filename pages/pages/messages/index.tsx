@@ -23,81 +23,25 @@ import { v4 as uuidv4 } from 'uuid';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 
 
-
-
 const Product = () => {
-    let emptyProduct: Demo.Product = {
+    let emptyProduct: Demo.Post = {
         id: '',
-        name: '',
+        title: '',
         image: '',
-        description: '',
-        category: '',
-        price: 0,
-        quantity: 0,
-        rating: 0,
-        inventoryStatus: 'INSTOCK'
     };
     const [productImage, setProductImage] = useState<File | null>(null);
-    const [products, setProducts] = useState<Demo.Product[]>([]);
+    const [products, setProducts] = useState<Demo.Post[]>([]);
     const [productDialog, setProductDialog] = useState(false);
     const [deleteProductDialog, setDeleteProductDialog] = useState(false);
     const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
-    const [product, setProduct] = useState<Demo.Product>(emptyProduct);
-    const [selectedProducts, setSelectedProducts] = useState<Demo.Product[]>([]);
+    const [product, setProduct] = useState<Demo.Post>(emptyProduct);
+    const [selectedProducts, setSelectedProducts] = useState<Demo.Post[]>([]);
     const [submitted, setSubmitted] = useState(false);
     const [globalFilter, setGlobalFilter] = useState('');
     const toast = useRef<Toast>(null);
-    const dt = useRef<DataTable<Demo.Product[]>>(null);
+    const dt = useRef<DataTable<Demo.Post[]>>(null);
     const fileUploadRef = useRef<FileUpload>(null);
-
-    const [usageInputFields ,setUsageInputFields]=useState<any>([])
-    const [diseaseInputFields ,setDiseaseInputFields]=useState<any>([])
-
-
-        const addUsageInputField = ()=>{
-            setUsageInputFields([...usageInputFields, {
-                usage:'',
-            } ])
-
-            console.log(usageInputFields)
-          
-        }
-
-        const removeUsageInputField = (index:number)=>{
-            const rows = [...usageInputFields];
-            rows.splice(index, 1);
-            setUsageInputFields(rows);
-       }
-
-       const handleUsageInputFieldChange = (index:number, evnt:any)=>{
-        const { name, value } = evnt.target;
-        const list:any = [...usageInputFields];
-       list[index].usage=value
-        setUsageInputFields(list);
-    }
-
-
-    const addDiseaseInputField = ()=>{
-        setDiseaseInputFields([...diseaseInputFields, {
-            disease:'',
-        } ])
-
-      
-    }
-
-    const removeDiseaseInputField = (index:number)=>{
-        const rows = [...diseaseInputFields];
-        rows.splice(index, 1);
-        setDiseaseInputFields(rows);
-   }
-
-   const handleDiseaseInputFieldChange = (index:number, evnt:any)=>{
-    const { name, value } = evnt.target;
-    const list:any = [...diseaseInputFields];
-   list[index].disease=value
-    setDiseaseInputFields(list);
-}
-
+    
 
     useEffect(() => {
         const unsubscribe=loadProducts()
@@ -106,7 +50,7 @@ const Product = () => {
     }, []);
 
     const loadProducts=()=>{
-        const productRef=collection(FIRESTORE_DB,'products')
+        const productRef=collection(FIRESTORE_DB,'messages')
         const subscriber=onSnapshot(productRef,{
             next:(snapshot)=>{
               const products:any=[];
@@ -137,8 +81,6 @@ const Product = () => {
     };
 
     const openNew = () => {
-        setDiseaseInputFields([])
-        setUsageInputFields([])
         setProduct(emptyProduct);
         setSubmitted(false);
         setProductDialog(true);
@@ -158,33 +100,26 @@ const Product = () => {
     };
 
     const handleSaveProduct=async (downloadURL:string)=>{
-        if (product.name.trim()) {
+        if (product.title?.trim()) {
             let _products = [...products];
             let _product = { ...product };
             if (product.id) {
     
-                 const ref=doc(FIRESTORE_DB,`products/${product.id}`)
+                 const ref=doc(FIRESTORE_DB,`messages/${product.id}`)
                  await updateDoc(ref,{
-                    name:_product.name,
-                    price:_product.price,
+                    title:_product.title,
                     description:_product.description,
                     image:downloadURL,
-                    usages:usageInputFields,
-                    diseases:diseaseInputFields,
                  })
                  loadProducts()
                 toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
             } else {
                 if(downloadURL.length>0){
                     const createdById=FIREBASE_AUTH.currentUser?.uid || ''
-                    console.log("mmmmmmmmmmmmmmmmmmmmm",createdById)
-                    const doc=await addDoc(collection(FIRESTORE_DB,'products'),{
-                        name:_product.name,
+                    const doc=await addDoc(collection(FIRESTORE_DB,'messages'),{
+                        title:_product.title,
                         description:_product.description,
-                        price:_product.price,
                         image:downloadURL,
-                        usages:usageInputFields,
-                        diseases:diseaseInputFields,
                         createdBy:createdById
                      })
                      loadProducts()
@@ -238,22 +173,12 @@ const Product = () => {
     }
 
     const saveProduct =  async() => {
-        setSubmitted(true);
-        if(productImage){
-           saveWithImage(handleSaveProduct)
-        }else{
-            handleSaveProduct(product.image ?? '') 
-        }
-        
-
-
+        setSubmitted(true)
      
     };
 
     const editProduct = (product: Demo.Product) => {
         setProduct({ ...product });
-        setUsageInputFields(product.usages)
-        setDiseaseInputFields(product.diseases)
         setProductDialog(true);
     };
 
@@ -264,17 +189,13 @@ const Product = () => {
 
     const deleteProduct = () => {
         
-        const reff=doc(FIRESTORE_DB,`products/${product.id}`)
+        const reff=doc(FIRESTORE_DB,`messages/${product.id}`)
         deleteDoc(reff)
-
-    const storage = getStorage();
-    const storageRef = ref(storage, product.image);
-    deleteObject(storageRef);
 
         loadProducts()
         setDeleteProductDialog(false);
         setProduct(emptyProduct);
-        toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
+        toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Message Deleted', life: 3000 });
     };
 
     const findIndexById = (id: string) => {
@@ -317,32 +238,27 @@ const Product = () => {
     };
 
     const onCategoryChange = (e: RadioButtonChangeEvent) => {
-        let _product = { ...product };
-        _product['category'] = e.value;
+        const _product = { ...product, category: e.value };
         setProduct(_product);
     };
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
         const val = (e.target && e.target.value) || '';
-        let _product = { ...product };
-        _product[`${name}`] = val;
-
+        const _product = { ...product,[name]: val };
         setProduct(_product);
     };
 
     const onInputNumberChange = (e: InputNumberValueChangeEvent, name: string) => {
         const val = e.value || 0;
-        let _product = { ...product };
-        _product[`${name}`] = val;
-
+        const _product = { ...product,[name]: val };
         setProduct(_product);
+
     };
 
     const rightToolbarTemplate = () => {
         return (
             <React.Fragment>
                 <div className="my-2">
-                    <Button label="New" icon="pi pi-plus" severity="success" className=" mr-2" onClick={openNew} />
                     <Button label="Delete" icon="pi pi-trash" severity="danger" onClick={confirmDeleteSelected} disabled={!selectedProducts || !selectedProducts.length} />
                 </div>
             </React.Fragment>
@@ -360,7 +276,7 @@ const Product = () => {
         );
     };
 
-    const nameBodyTemplate = (rowData: Demo.Product) => {
+    const titleBodyTemplate = (rowData: Demo.Post) => {
         return (
             <>
                 <span className="p-column-title">Name</span>
@@ -378,11 +294,11 @@ const Product = () => {
         );
     };
 
-    const priceBodyTemplate = (rowData: Demo.Product) => {
+    const descriptionBodyTemplate = (rowData: Demo.Post) => {
         return (
             <>
-                <span className="p-column-title">Price</span>
-                {formatCurrency(rowData.price as number)}
+                <span className="p-column-title">Message</span>
+                {rowData.message}
             </>
         );
     };
@@ -414,20 +330,11 @@ const Product = () => {
         );
     };
 
-    const descriptionBodyTemplate = (rowData: Demo.Post) => {
-        return (
-            <>
-                <span className="p-column-title">Description</span>
-                {rowData.description}
-            </>
-        );
-    };
-
 
     const actionBodyTemplate = (rowData: Demo.Product) => {
         return (
             <>
-                <Button icon="pi pi-pencil" rounded severity="success" className="mr-2" onClick={() => editProduct(rowData)} />
+                <Button icon="pi pi-eye" rounded severity="success" className="mr-2" onClick={() => editProduct(rowData)} />
                 <Button icon="pi pi-trash" rounded severity="warning" onClick={() => confirmDeleteProduct(rowData)} />
             </>
         );
@@ -435,19 +342,17 @@ const Product = () => {
 
     const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-            <h5 className="m-0">Manage Products</h5>
+            <h5 className="m-0">Manage Messages</h5>
             <span className="block mt-2 md:mt-0 p-input-icon-left">
                 <i className="pi pi-search" />
                 <InputText type="search" onInput={(e) => setGlobalFilter(e.currentTarget.value)} placeholder="Search..." />
             </span>
         </div>
     );
-    
 
     const productDialogFooter = (
         <>
             <Button label="Cancel" icon="pi pi-times" text onClick={hideDialog} />
-            <Button label="Save" icon="pi pi-check" text onClick={saveProduct} />
         </>
     );
     const deleteProductDialogFooter = (
@@ -462,6 +367,7 @@ const Product = () => {
             <Button label="Yes" icon="pi pi-check" text onClick={deleteSelectedProducts} />
         </>
     );
+
     return (
         <div className="grid crud-demo">
             <div className="col-12">
@@ -487,10 +393,8 @@ const Product = () => {
                         responsiveLayout="scroll"
                     >
                         <Column selectionMode="multiple" headerStyle={{ width: '4rem' }}></Column>
-                        <Column header="Image" body={imageBodyTemplate}></Column>
-                        <Column field="name" header="Name" sortable body={nameBodyTemplate} headerStyle={{ minWidth: '15rem' }}></Column>
-                        <Column field="description" header="description" body={descriptionBodyTemplate} sortable></Column>
-                        <Column field="price" header="Price" body={priceBodyTemplate} sortable></Column>
+                        <Column field="name" header="name" sortable body={titleBodyTemplate} headerStyle={{ minWidth: '15rem' }}></Column>
+                        <Column field="message" header="message" body={descriptionBodyTemplate} sortable></Column>
                         <Column body={actionBodyTemplate} headerStyle={{ minWidth: '10rem' }}></Column>
                     </DataTable>
                     <Dialog visible={productDialog} style={{ width: '450px' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
@@ -500,71 +404,22 @@ const Product = () => {
                             <InputText id="name" value={product.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && !product.name })} />
                             {submitted && !product.name && <small className="p-invalid">Name is required.</small>}
                         </div>
-
                         <div className="field">
-                            <label htmlFor="description">Description</label>
-                            <InputTextarea id="description" value={product.description} onChange={(e) => onInputChange(e, 'description')} required rows={3} cols={20} />
-                        </div>
-                        
-                        <div className="formgrid grid">
-                            <div className="field col">
-                                <label htmlFor="price">Price</label>
-                                <InputNumber id="price" value={product.price} onValueChange={(e) => onInputNumberChange(e, 'price')} mode="currency" currency="USD" locale="en-US" />
-                            </div>
-                           
+                            <label htmlFor="email">Email</label>
+                            <InputText id="email" value={product.email} onChange={(e) => onInputChange(e, 'email')} required autoFocus className={classNames({ 'p-invalid': submitted && !product.email })} />
+                            {submitted && !product.email && <small className="p-invalid">Email is required.</small>}
                         </div>
                         <div className="field">
-                            <label htmlFor="image">Image</label>
-                            <FileUpload 
-                                        ref={fileUploadRef}
-                                        mode="basic"   
-                                        onSelect={onUploadHandler} 
-                                        accept="image/*" 
-                                        chooseLabel='Select Image'
-                                        maxFileSize={1000000}
-                                        />
-                                       
+                            <label htmlFor="subject">Subject</label>
+                            <InputText id="subject" value={product.subject} onChange={(e) => onInputChange(e, 'subject')} required autoFocus className={classNames({ 'p-invalid': submitted && !product.subject })} />
+                            {submitted && !product.subject && <small className="p-invalid">Subject is required.</small>}
+                        </div>
+                        
+                        <div className="field">
+                            <label htmlFor="message">message</label>
+                            <InputTextarea id="message" value={product.message} onChange={(e) => onInputChange(e, 'message')} required rows={7} cols={20} />
                         </div>
 
-                        <div className="field">
-                            <label htmlFor="name">Diseases</label>
-                        {diseaseInputFields.map((data, index)=>{
-                        
-                          const {disease}= data;
-                          return(<div className="field">
-                            <div className="flex gap-3">
-                            <InputText id="disease" 
-                                     onChange={(evnt)=>handleDiseaseInputFieldChange(index, evnt)} 
-                                     value={disease} required autoFocus 
-                                     className={classNames({ 'p-invalid': submitted && !disease })} />
-                            <Button icon="pi pi-times" rounded outlined severity="danger" onClick={()=>{removeDiseaseInputField(index)}} />
-                            </div>
-                            {submitted && !product.name && <small className="p-invalid">Name is required.</small>}
-                          
-                           </div> )
-                          })}
-                             <Button className='w-3' label="Add" icon="pi pi-plus" text onClick={addDiseaseInputField} />
-                           </div>
-
-                        <div className="field">
-                            <label htmlFor="name">Usage</label>
-                        {usageInputFields.map((data, index)=>{
-                        
-                          const {usage}= data;
-                          return(<div className="field">
-                            <div className="flex gap-3">
-                            <InputText id="usage" 
-                                     onChange={(evnt)=>handleUsageInputFieldChange(index, evnt)} 
-                                     value={usage} required autoFocus 
-                                     className={classNames({ 'p-invalid': submitted && !usage })} />
-                            <Button icon="pi pi-times" rounded outlined severity="danger" onClick={()=>{removeUsageInputField(index)}} />
-                            </div>
-                            {submitted && !product.name && <small className="p-invalid">Name is required.</small>}
-                          
-                           </div> )
-                          })}
-                             <Button className='w-3' label="Add" icon="pi pi-plus" text onClick={addUsageInputField} />
-                           </div>
                     </Dialog>
 
                     <Dialog visible={deleteProductDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteProductDialogFooter} onHide={hideDeleteProductDialog}>
@@ -572,7 +427,7 @@ const Product = () => {
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
                             {product && (
                                 <span>
-                                    Are you sure you want to delete <b>{product.name}</b>?
+                                    Are you sure you want to delete <b>{product.title}</b>?
                                 </span>
                             )}
                         </div>

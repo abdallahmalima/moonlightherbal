@@ -1,7 +1,19 @@
 import Image from 'next/image';
 import React from 'react';
 
-function AboutUs({isHome=true,sectionId}) {
+function AboutUs({isHome=true,
+                   sectionId,
+                    image1,
+                    image2,
+                    image3, 
+                    image4, 
+                    post_image1,
+                    post_image2, 
+                    title,
+                    description,
+                    title_second,
+                    description_second,
+                }) {
     return (
         <>
               <div
@@ -22,7 +34,7 @@ function AboutUs({isHome=true,sectionId}) {
                 <div className="row g-3">
                   <div className="col-6 text-end">
                   <Image
-                    src="/img/about-1.jpg"
+                    src={image1}
                     width={0}
                     height={0}
                     sizes="100vw"
@@ -32,7 +44,7 @@ function AboutUs({isHome=true,sectionId}) {
                     data-wow-delay="0.1s"
                     />
                       <Image
-                    src="/img/about-3.jpg"
+                    src={image2}
                     width={0}
                     height={0}
                     sizes="100vw"
@@ -44,7 +56,7 @@ function AboutUs({isHome=true,sectionId}) {
                   </div>
                   <div className="col-6">
                     <Image
-                    src="/img/about-4.jpg"
+                    src={image3}
                     width={0}
                     height={0}
                     sizes="100vw"
@@ -54,7 +66,7 @@ function AboutUs({isHome=true,sectionId}) {
                     data-wow-delay="0.3s"
                     />
                      <Image
-                    src="/img/about-2.jpg"
+                    src={image4}
                     width={0}
                     height={0}
                     sizes="100vw"
@@ -70,7 +82,7 @@ function AboutUs({isHome=true,sectionId}) {
                 <div className="row g-3 mb-4">
                   <div className="col-sm-4">
                      <Image
-                    src="/img/about-5.jpg"
+                    src={post_image1}
                     width={0}
                     height={0}
                     sizes="100vw"
@@ -81,33 +93,23 @@ function AboutUs({isHome=true,sectionId}) {
                     />
                   </div>
                   <div className="col-sm-8">
-                    <h5>Our tea is one of the most popular drinks in the world</h5>
+                    <h5>{title}</h5>
                     <p className="mb-0">
-                      Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit.
-                      Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit
-                      Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit.
-                      Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit
-                      Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit.
-                      Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit
+                    {description}
                     </p>
                   </div>
                 </div>
                 <div className="border-top mb-4" />
                 <div className="row g-3">
                   <div className="col-sm-8">
-                    <h5>Daily use of a cup of tea is good for your health</h5>
+                    <h5>{title_second}</h5>
                     <p className="mb-0">
-                      Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit.
-                      Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit
-                      Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit.
-                      Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit
-                      Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit.
-                      Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit
+                     {description_second}
                     </p>
                   </div>
                   <div className="col-sm-4">
                       <Image
-                    src="/img/about-6.jpg"
+                    src={post_image2}
                     width={0}
                     height={0}
                     sizes="100vw"

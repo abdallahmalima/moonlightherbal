@@ -11,6 +11,7 @@ type ProductType={
 }
 
 function ProductComp({isHome=false,products}:{isHome:boolean,products:ProductType[]}) {
+  
     return (
         <>
         <div className="container-xxl py-5">

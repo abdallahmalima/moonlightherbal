@@ -19,25 +19,40 @@ const AppMenu = () => {
             items: [
               
                 {
+                    label: 'Headers',
+                    icon: 'pi pi-fw pi-pencil',
+                    to: '/pages/headers'
+                },
+                {
                     label: 'Products',
                     icon: 'pi pi-fw pi-pencil',
                     to: '/pages/products'
                 },
 
                 {
-                    label: 'Posts',
+                    label: 'Blogs',
                     icon: 'pi pi-fw pi-pencil',
                     to: '/pages/posts'
-                },
-                {
-                    label: 'Headers',
-                    icon: 'pi pi-fw pi-pencil',
-                    to: '/pages/headers'
                 },
                 {
                     label: 'Testimonials',
                     icon: 'pi pi-fw pi-pencil',
                     to: '/pages/testimonials'
+                },
+                {
+                    label: 'Contact',
+                    icon: 'pi pi-fw pi-pencil',
+                    to: '/pages/contact'
+                },
+                {
+                    label: 'About',
+                    icon: 'pi pi-fw pi-pencil',
+                    to: '/pages/about'
+                },
+                {
+                    label: 'Messages',
+                    icon: 'pi pi-fw pi-pencil',
+                    to: '/pages/messages'
                 },
             ]
         },

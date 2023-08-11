@@ -23,7 +23,7 @@ const LoginPage: Page = () => {
     const containerClassName = classNames('surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden', { 'p-input-filled': layoutConfig.inputStyle === 'filled' });
      const handleLogin=()=>{
       const res=signInWithEmailAndPassword(FIREBASE_AUTH,email,password).then(()=>{
-        router.push('/pages/crud')
+        router.push('/pages/headers')
       })
       console.log(res);
       

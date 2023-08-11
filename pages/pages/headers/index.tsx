@@ -21,6 +21,7 @@ import {FIRESTORE_DB,FIREBASE_AUTH}  from "../../../firebase.config";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 import { v4 as uuidv4 } from 'uuid';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { Skeleton } from 'primereact/skeleton';
 
 
 const Product = () => {
@@ -298,6 +299,15 @@ const Product = () => {
         );
     };
 
+
+    const titleSkeletonBodyTemplate = (rowData: Demo.Post) => {
+        return (
+            <>
+                 <Skeleton width="100%" className="mb-2"></Skeleton>
+            </>
+        );
+    };
+
     const imageBodyTemplate = (rowData: Demo.Product) => {
         return (
             <>
@@ -355,7 +365,7 @@ const Product = () => {
 
     const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-            <h5 className="m-0">Manage Products</h5>
+            <h5 className="m-0">Manage Headers</h5>
             <span className="block mt-2 md:mt-0 p-input-icon-left">
                 <i className="pi pi-search" />
                 <InputText type="search" onInput={(e) => setGlobalFilter(e.currentTarget.value)} placeholder="Search..." />
@@ -388,7 +398,6 @@ const Product = () => {
                 <div className="card">
                     <Toast ref={toast} />
                     <Toolbar className="mb-4" right={rightToolbarTemplate}></Toolbar>
-
                     <DataTable
                         ref={dt}
                         value={products}

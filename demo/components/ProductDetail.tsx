@@ -12,7 +12,7 @@ type ProductItemType={
     image:string;
   }
 
-function ProductDetail({id,name,description,price,image}:ProductItemType) {
+function ProductDetail({id,name,description,price,image,usages,diseases}:ProductItemType) {
     return (
         <>
               <div className="d-lg-flex  gap-5 px-3 justify-content-center wow fadeInUp" data-wow-delay="0.1s">
@@ -49,15 +49,11 @@ function ProductDetail({id,name,description,price,image}:ProductItemType) {
                   <h2 className="display-6">Inatibu Magonjwa Yafuatayo</h2>
                 </div>
                 <ul>
-                    <li className="mb-2">
-                    Kifafa
-                    </li>
-                    <li className="mb-2">
-                    Malaria
-                    </li>
-                    <li className="mb-2">
-                    Miguu kuvimba
-                    </li>
+                    {diseases.map((disease)=>(
+                       <li className="mb-2">
+                       {disease.disease}
+                       </li> 
+                    ))}
                 </ul>
                
                 
@@ -68,12 +64,11 @@ function ProductDetail({id,name,description,price,image}:ProductItemType) {
                 <div className="section-title">
                   <h2 className="display-6">Matumizi</h2>
                 </div>
-                <p className="mb-4">
-                  Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit
-                </p>
-                <p className="mb-4">
-                  Diam dolor diam ipsum sit. Aliqu diam amet diam et 
-                </p>
+                {usages.map((usage)=>(
+                        <p className="mb-4">
+                       {usage.usage}
+                      </p>
+                    ))}
                
               </div>
 

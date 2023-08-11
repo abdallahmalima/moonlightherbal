@@ -4,6 +4,7 @@ import BlogItem from '../../../demo/components/BlogItem';
 import BlogComp from '../../../demo/components/BlogComp';
 import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 import { FIRESTORE_DB } from '../../../firebase.config';
+import Link from 'next/link';
 
 const getBlog= async (slug:string) => {
   const blogRef = doc(FIRESTORE_DB, 'posts', slug);
@@ -29,14 +30,11 @@ function BlogDetail({blog}) {
             <h1 className="display-2 text-dark mb-4 animated slideInDown">Acticle</h1>
             <nav aria-label="breadcrumb animated slideInDown">
               <ol className="breadcrumb justify-content-center mb-0">
-                <li className="breadcrumb-item">
-                  <a href="#">Home</a>
-                </li>
-                <li className="breadcrumb-item">
-                  <a href="#">Pages</a>
+              <li className="breadcrumb-item">
+                  <Link href="/">Home</Link>
                 </li>
                 <li className="breadcrumb-item text-dark" aria-current="page">
-                  Acticle
+                  Blog
                 </li>
               </ol>
             </nav>

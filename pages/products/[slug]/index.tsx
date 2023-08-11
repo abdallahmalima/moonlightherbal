@@ -5,6 +5,7 @@ import BlogComp from '../../../demo/components/BlogComp';
 import ProductDetail from '../../../demo/components/ProductDetail';
 import { doc, getDoc } from 'firebase/firestore';
 import { FIRESTORE_DB } from '../../../firebase.config';
+import Link from 'next/link';
 
 const getProduct= async (slug:string) => {
   const productRef = doc(FIRESTORE_DB, 'products', slug);
@@ -26,17 +27,14 @@ function ProductSingle({product}:any) {
           data-wow-delay="0.1s"
         >
           <div className="container text-center py-5">
-            <h1 className="display-2 text-dark mb-4 animated slideInDown">Product Item</h1>
+            <h1 className="display-2 text-dark mb-4 animated slideInDown">Product</h1>
             <nav aria-label="breadcrumb animated slideInDown">
               <ol className="breadcrumb justify-content-center mb-0">
-                <li className="breadcrumb-item">
-                  <a href="#">Home</a>
-                </li>
-                <li className="breadcrumb-item">
-                  <a href="#">Pages</a>
+              <li className="breadcrumb-item">
+                  <Link href="/">Home</Link>
                 </li>
                 <li className="breadcrumb-item text-dark" aria-current="page">
-                  Acticle
+                  Product
                 </li>
               </ol>
             </nav>
@@ -49,6 +47,9 @@ function ProductSingle({product}:any) {
         description={product.description}
         price={product.price}
         image={product.image}
+        usages={product.usages}
+        diseases={product.diseases}
+        
         />
 </>
        

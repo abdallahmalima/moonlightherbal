@@ -1,23 +1,41 @@
 import React from 'react';
 import FontLayout from '../../demo/components/FontLayout';
 import ContactInfo from '../../demo/components/ContactInfo';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, limit, onSnapshot, query } from 'firebase/firestore';
 import { FIRESTORE_DB } from '../../firebase.config';
+import ContactForm from '../../demo/components/ContactForm';
+import Link from 'next/link';
 
-// async function getData() {
-//     const res = await fetch('https://jsonplaceholder.typicode.com/todos')
-//     // The return value is *not* serialized
-//     // You can return Date, Map, Set, etc.
-   
-//     if (!res.ok) {
-//       // This will activate the closest `error.js` Error Boundary
-//       throw new Error('Failed to fetch data')
-//     }
-   
-//     return res.json()
-//   }
+const getContact = async () => {
+    return new Promise((resolve, reject) => {
+      let contact = {};
+      const productRef = collection(FIRESTORE_DB, 'contact');
+      const q = query(productRef, limit(1));
+  
+      const unsubscribe = onSnapshot(q, {
+        next: (snapshot) => {
+          snapshot.docs.forEach((doc) => {
+            contact = {
+              id: doc.id,
+              ...doc.data(),
+            };
+          });
+  
+          // Resolve the promise with the retrieved 'contact' object
+          resolve(contact);
+        },
+        error: (error) => {
+          // Reject the promise if there's an error
+          reject(error);
+        },
+      });
+  
+      // Clean up the snapshot listener when the promise is resolved or rejected
+      return unsubscribe;
+    });
+  };
 
-const  Contact= ()=> {
+const  Contact= ({contact})=> {
    // const data = await getData()
     return (
         <>
@@ -33,10 +51,7 @@ const  Contact= ()=> {
             <nav aria-label="breadcrumb animated slideInDown">
               <ol className="breadcrumb justify-content-center mb-0">
                 <li className="breadcrumb-item">
-                  <a href="#">Home</a>
-                </li>
-                <li className="breadcrumb-item">
-                  <a href="#">Pages</a>
+                  <Link href="/">Home</Link>
                 </li>
                 <li className="breadcrumb-item text-dark" aria-current="page">
                   Contact
@@ -49,73 +64,19 @@ const  Contact= ()=> {
         {/* Contact Start */}
         <div className="container-xxl contact py-5">
           <div className="container">
-           <ContactInfo/>
+          <ContactInfo
+         contact1={contact.contact1}
+         contact2={contact.contact2}
+         email1={contact.email1}
+         email12={contact.email2}
+         street={contact.street}
+         region={contact.region}
+         description={contact.description}
+       />
             <div className="row g-5">
               <div className="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
-                <h3 className="mb-4">Need a functional contact form?</h3>
-                <p className="mb-4">
-                  The contact form is currently inactive. Get a functional and working
-                  contact form with Ajax &amp; PHP in a few minutes. Just copy and
-                  paste the files, add a little code and you're done.{" "}
-                  <a href="https://htmlcodex.com/contact-form">Download Now</a>.
-                </p>
-                <form>
-                  <div className="row g-3">
-                    <div className="col-md-6">
-                      <div className="form-floating">
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="name"
-                          placeholder="Your Name"
-                        />
-                        <label htmlFor="name">Your Name</label>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-floating">
-                        <input
-                          type="email"
-                          className="form-control"
-                          id="email"
-                          placeholder="Your Email"
-                        />
-                        <label htmlFor="email">Your Email</label>
-                      </div>
-                    </div>
-                    <div className="col-12">
-                      <div className="form-floating">
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="subject"
-                          placeholder="Subject"
-                        />
-                        <label htmlFor="subject">Subject</label>
-                      </div>
-                    </div>
-                    <div className="col-12">
-                      <div className="form-floating">
-                        <textarea
-                          className="form-control"
-                          placeholder="Leave a message here"
-                          id="message"
-                          style={{ height: 120 }}
-                          defaultValue={""}
-                        />
-                        <label htmlFor="message">Message</label>
-                      </div>
-                    </div>
-                    <div className="col-12">
-                      <button
-                        className="btn btn-primary rounded-pill py-3 px-5"
-                        type="submit"
-                      >
-                        Send Message
-                      </button>
-                    </div>
-                  </div>
-                </form>
+                <h3 className="mb-4">{contact.title}</h3>
+               <ContactForm/>
               </div>
               <div className="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
                 <div className="h-100">
@@ -139,5 +100,27 @@ const  Contact= ()=> {
 }
 
 Contact.getLayout = FontLayout
+
+export async function getServerSideProps() {
+    try {
+      const contact =  await getContact();
+  
+      // Log the fetched data on the server side
+      console.log('Fetched data:', contact);
+  
+      return {
+        props: {
+          contact,
+        },
+      };
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      return {
+        props: {
+          contact: null,
+        },
+      };
+    }
+  }
 
 export default Contact;

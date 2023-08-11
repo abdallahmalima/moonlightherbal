@@ -76,7 +76,6 @@ const Product = () => {
     const onUploadHandler = (event:any) => {
         const file = event.files[0];
          setProductImage(file);   
-        toast.current?.show({ severity: 'info', summary: 'Success', detail: 'File Uploaded '+file.name, life: 3000 });
 
     };
 
@@ -112,7 +111,7 @@ const Product = () => {
                     image:downloadURL,
                  })
                  loadProducts()
-                toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
+                toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Message Updated', life: 3000 });
             } else {
                 if(downloadURL.length>0){
                     const createdById=FIREBASE_AUTH.currentUser?.uid || ''
@@ -123,7 +122,7 @@ const Product = () => {
                         createdBy:createdById
                      })
                      loadProducts()
-                     toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
+                     toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Message Created', life: 3000 });
                 }
                 
             }
@@ -397,7 +396,7 @@ const Product = () => {
                         <Column field="message" header="message" body={descriptionBodyTemplate} sortable></Column>
                         <Column body={actionBodyTemplate} headerStyle={{ minWidth: '10rem' }}></Column>
                     </DataTable>
-                    <Dialog visible={productDialog} style={{ width: '450px' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
+                    <Dialog visible={productDialog} style={{ width: '450px' }} header="Message Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
                         {product.image && <img src={`${product.image}`} alt={product.image} width="150" className="mt-0 mx-auto mb-5 block shadow-2" />}
                         <div className="field">
                             <label htmlFor="name">Name</label>
@@ -416,7 +415,7 @@ const Product = () => {
                         </div>
                         
                         <div className="field">
-                            <label htmlFor="message">message</label>
+                            <label htmlFor="message">Message</label>
                             <InputTextarea id="message" value={product.message} onChange={(e) => onInputChange(e, 'message')} required rows={7} cols={20} />
                         </div>
 

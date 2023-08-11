@@ -38,7 +38,7 @@ const FontLayout=function getLayout(page:any) {
     return (
         <React.Fragment>
            <meta charSet="utf-8" />
-  <title>Tea House - Tea Shop Website Template</title>
+  <title>Moonlight herbal</title>
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
   <meta content="" name="keywords" />
   <meta content="" name="description" />

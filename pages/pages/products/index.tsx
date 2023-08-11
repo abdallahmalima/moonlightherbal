@@ -132,7 +132,6 @@ const Product = () => {
     const onUploadHandler = (event:any) => {
         const file = event.files[0];
          setProductImage(file);   
-        toast.current?.show({ severity: 'info', summary: 'Success', detail: 'File Uploaded '+file.name, life: 3000 });
 
     };
 
@@ -443,11 +442,23 @@ const Product = () => {
         </div>
     );
     
+    const isFormFilled=()=>{
+
+        if(product.id) {
+         return product.name?.length>0  &&
+                product.description?.length>0
+        }
+
+        return product.name?.length>0  &&
+        product.description?.length>0 &&
+        productImage!=null 
+
+      }
 
     const productDialogFooter = (
         <>
             <Button label="Cancel" icon="pi pi-times" text onClick={hideDialog} />
-            <Button label="Save" icon="pi pi-check" text onClick={saveProduct} />
+            <Button label="Save" icon="pi pi-check" text onClick={saveProduct}  disabled={!isFormFilled()}/>
         </>
     );
     const deleteProductDialogFooter = (
@@ -494,7 +505,7 @@ const Product = () => {
                         <Column body={actionBodyTemplate} headerStyle={{ minWidth: '10rem' }}></Column>
                     </DataTable>
                     <Dialog visible={productDialog} style={{ width: '450px' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
-                        {product.image && <img src={`${product.image}`} alt={product.image} width="150" className="mt-0 mx-auto mb-5 block shadow-2" />}
+    
                         <div className="field">
                             <label htmlFor="name">Name</label>
                             <InputText id="name" value={product.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && !product.name })} />
@@ -509,7 +520,7 @@ const Product = () => {
                         <div className="formgrid grid">
                             <div className="field col">
                                 <label htmlFor="price">Price</label>
-                                <InputNumber id="price" value={product.price} onValueChange={(e) => onInputNumberChange(e, 'price')} mode="currency" currency="USD" locale="en-US" />
+                                <InputNumber id="price" value={product.price} onValueChange={(e) => onInputNumberChange(e, 'price')} mode="currency" currency="Tsh" locale="en-US" />
                             </div>
                            
                         </div>
@@ -523,6 +534,9 @@ const Product = () => {
                                         chooseLabel='Select Image'
                                         maxFileSize={1000000}
                                         />
+                                         {productImage ? (<img src={`${URL.createObjectURL(productImage)}`} alt={URL.createObjectURL(productImage)} width="150" className="mt-1 mb-5 block shadow-2" />):(
+                                            product.image && <img src={`${product.image}`} alt={product.image} width="150" className="mt-1 mb-5 block shadow-2" />
+                                         )}
                                        
                         </div>
 
@@ -531,7 +545,7 @@ const Product = () => {
                         {diseaseInputFields.map((data, index)=>{
                         
                           const {disease}= data;
-                          return(<div className="field">
+                          return(<div key={disease} className="field">
                             <div className="flex gap-3">
                             <InputText id="disease" 
                                      onChange={(evnt)=>handleDiseaseInputFieldChange(index, evnt)} 
@@ -551,7 +565,7 @@ const Product = () => {
                         {usageInputFields.map((data, index)=>{
                         
                           const {usage}= data;
-                          return(<div className="field">
+                          return(<div key={usage} className="field">
                             <div className="flex gap-3">
                             <InputText id="usage" 
                                      onChange={(evnt)=>handleUsageInputFieldChange(index, evnt)} 

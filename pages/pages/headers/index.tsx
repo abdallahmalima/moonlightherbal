@@ -79,7 +79,6 @@ const Product = () => {
     const onUploadHandler = (event:any) => {
         const file = event.files[0];
          setProductImage(file);   
-        toast.current?.show({ severity: 'info', summary: 'Success', detail: 'File Uploaded '+file.name, life: 3000 });
 
     };
 
@@ -114,7 +113,7 @@ const Product = () => {
                     image:downloadURL,
                  })
                  loadProducts()
-                toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
+                toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Header Updated', life: 3000 });
             } else {
                 if(downloadURL.length>0){
                     const createdById=FIREBASE_AUTH.currentUser?.uid || ''
@@ -124,7 +123,7 @@ const Product = () => {
                         createdBy:createdById
                      })
                      loadProducts()
-                     toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
+                     toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Header Created', life: 3000 });
                 }
                 
             }
@@ -208,7 +207,7 @@ const Product = () => {
         loadProducts()
         setDeleteProductDialog(false);
         setProduct(emptyProduct);
-        toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
+        toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Header Deleted', life: 3000 });
     };
 
     const findIndexById = (id: string) => {
@@ -373,10 +372,18 @@ const Product = () => {
         </div>
     );
 
+    const isFormFilled=()=>{
+
+      if(product.id) {
+       return product.title?.length>0 
+      } 
+      return product.title?.length>0 && productImage!=null
+    }
+
     const productDialogFooter = (
         <>
             <Button label="Cancel" icon="pi pi-times" text onClick={hideDialog} />
-            <Button label="Save" icon="pi pi-check" text onClick={saveProduct} />
+            <Button label="Save" icon="pi pi-check" text onClick={saveProduct}  disabled={!isFormFilled()}/>
         </>
     );
     const deleteProductDialogFooter = (
@@ -420,8 +427,7 @@ const Product = () => {
                         <Column field="title" header="title" sortable body={titleBodyTemplate} headerStyle={{ minWidth: '15rem' }}></Column>
                         <Column body={actionBodyTemplate} headerStyle={{ minWidth: '10rem' }}></Column>
                     </DataTable>
-                    <Dialog visible={productDialog} style={{ width: '450px' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
-                        {product.image && <img src={`${product.image}`} alt={product.image} width="150" className="mt-0 mx-auto mb-5 block shadow-2" />}
+                    <Dialog visible={productDialog} style={{ width: '450px' }} header="Header Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
                         <div className="field">
                             <label htmlFor="title">Title</label>
                             <InputText id="title" value={product.title} onChange={(e) => onInputChange(e, 'title')} required autoFocus className={classNames({ 'p-invalid': submitted && !product.title })} />
@@ -438,6 +444,10 @@ const Product = () => {
                                         chooseLabel='Select Image'
                                         maxFileSize={1000000}
                                         />
+                                         {productImage ? (<img src={`${URL.createObjectURL(productImage)}`} alt={URL.createObjectURL(productImage)} width="150" className="mt-1 mb-5 block shadow-2" />):(
+                                            product.image && <img src={`${product.image}`} alt={product.image} width="150" className="mt-1 mb-5 block shadow-2" />
+                                         )}
+                                         
                                        
                         </div>
                     </Dialog>

@@ -243,7 +243,7 @@ const Product = () => {
                           setImage3(undefined)
                           setImage4(undefined)
                           loadProducts()
-                         toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
+                         toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'About Updated', life: 3000 });
 
 
             setProducts(_products);
@@ -285,7 +285,7 @@ const Product = () => {
                      setImage3(undefined)
                      setImage4(undefined)
                      loadProducts()
-                     toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
+                     toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'About Created', life: 3000 });
 
                      setProducts(_products);
                      setProductDialog(false);
@@ -528,7 +528,7 @@ const Product = () => {
         loadProducts()
         setDeleteProductDialog(false);
         setProduct(emptyProduct);
-        toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
+        toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'About Deleted', life: 3000 });
     };
 
     const findIndexById = (id: string) => {
@@ -684,10 +684,32 @@ const Product = () => {
         </div>
     );
 
+    const isFormFilled=()=>{
+
+        if(product.id) {
+         return product.title?.length>0  &&
+                product.description?.length>0 &&
+                product.title_second?.length>0  &&
+                product.description_second?.length>0
+        }
+
+        return product.title?.length>0  &&
+        product.description?.length>0 &&
+        product.title_second?.length>0  &&
+        product.description_second?.length>0 &&
+        productImage!=null  &&
+        secondProductImage!=null  &&
+        productImage1!=null  &&
+        productImage2!=null  &&
+        productImage3!=null  &&
+        productImage4!=null  
+
+      }
+
     const productDialogFooter = (
         <>
             <Button label="Cancel" icon="pi pi-times" text onClick={hideDialog} />
-            <Button label="Save" icon="pi pi-check" text onClick={saveProduct} />
+            <Button label="Save" icon="pi pi-check" text onClick={saveProduct}  disabled={!isFormFilled()}/>
         </>
     );
     const deleteProductDialogFooter = (
@@ -733,14 +755,13 @@ const Product = () => {
                         <Column field="description" header="description" body={descriptionBodyTemplate} sortable></Column>
                         <Column body={actionBodyTemplate} headerStyle={{ minWidth: '10rem' }}></Column>
                     </DataTable>
-                    <Dialog visible={productDialog} style={{ width: '450px' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
-                        {product.image1 && <img src={`${product.image1}`} alt={product.image1} width="150" className="mt-0 mx-auto mb-5 block shadow-2" />}
-                        {product.image2 && <img src={`${product.image2}`} alt={product.image2} width="150" className="mt-0 mx-auto mb-5 block shadow-2" />}
-                        {product.image3 && <img src={`${product.image3}`} alt={product.image3} width="150" className="mt-0 mx-auto mb-5 block shadow-2" />}
-                        {product.image4 && <img src={`${product.image4}`} alt={product.image4} width="150" className="mt-0 mx-auto mb-5 block shadow-2" />}
-                        {product.post_image1 && <img src={`${product.post_image1}`} alt={product.post_image1} width="150" className="mt-0 mx-auto mb-5 block shadow-2" />}
-                        {product.post_image2 && <img src={`${product.post_image2}`} alt={product.post_image2} width="150" className="mt-0 mx-auto mb-5 block shadow-2" />}
-                         
+                    <Dialog visible={productDialog} style={{ width: '450px' }} header="About Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
+                     
+                        
+                        
+                        
+                      
+                         <div className="flex gap-5">
                         <div className="field">
                             <label htmlFor="image"> Image One</label>
                             <FileUpload 
@@ -751,6 +772,7 @@ const Product = () => {
                                         chooseLabel='Select Image'
                                         maxFileSize={1000000}
                                         />
+                                        {product.image1 && <img src={`${product.image1}`} alt={product.image1} width="150" className="mt-1 mb-5 block shadow-2" />}
                                        
                         </div>
                         <div className="field">
@@ -763,8 +785,11 @@ const Product = () => {
                                         chooseLabel='Select Image'
                                         maxFileSize={1000000}
                                         />
+                                        {product.image2 && <img src={`${product.image2}`} alt={product.image2} width="150" className="mt-1 mb-5 block shadow-2" />}
                                        
                         </div>
+                        </div>
+                        <div className="flex gap-5">
                         <div className="field">
                             <label htmlFor="image"> Image Three</label>
                             <FileUpload 
@@ -775,6 +800,7 @@ const Product = () => {
                                         chooseLabel='Select Image'
                                         maxFileSize={1000000}
                                         />
+                                        {product.image3 && <img src={`${product.image3}`} alt={product.image3} width="150" className="mt-1 mb-5 block shadow-2" />}
                                        
                         </div>
                         <div className="field">
@@ -787,9 +813,10 @@ const Product = () => {
                                         chooseLabel='Select Image'
                                         maxFileSize={1000000}
                                         />
+                                       {product.image4 && <img src={`${product.image4}`} alt={product.image4} width="150" className="mt-1 mb-5 block shadow-2" />}
                                        
                         </div>
-
+                        </div>
 
 
                         <div className="field">
@@ -813,6 +840,8 @@ const Product = () => {
                                         chooseLabel='Select Image'
                                         maxFileSize={1000000}
                                         />
+                                        {product.post_image1 && <img src={`${product.post_image1}`} alt={product.post_image1} width="150" className="mt-1  mb-5 block shadow-2" />}
+                       
                                        
                         </div>
                         <div className="field">
@@ -836,6 +865,7 @@ const Product = () => {
                                         chooseLabel='Select Image'
                                         maxFileSize={1000000}
                                         />
+                                         {product.post_image2 && <img src={`${product.post_image2}`} alt={product.post_image2} width="150" className="mt-1 mb-5 block shadow-2" />}
                                        
                         </div>
                     </Dialog>

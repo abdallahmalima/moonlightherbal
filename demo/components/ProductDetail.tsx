@@ -50,7 +50,7 @@ function ProductDetail({id,name,description,price,image,usages,diseases}:Product
                 </div>
                 <ul>
                     {diseases.map((disease)=>(
-                       <li className="mb-2">
+                       <li key={disease.disease} className="mb-2">
                        {disease.disease}
                        </li> 
                     ))}
@@ -65,7 +65,7 @@ function ProductDetail({id,name,description,price,image,usages,diseases}:Product
                   <h2 className="display-6">Matumizi</h2>
                 </div>
                 {usages.map((usage)=>(
-                        <p className="mb-4">
+                        <p key={disease.disease} className="mb-4">
                        {usage.usage}
                       </p>
                     ))}

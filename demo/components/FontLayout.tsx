@@ -15,6 +15,13 @@ const FontLayout=function getLayout(page:any) {
           return ()=>{unsubscribe()}
     }, []);
 
+    const [social,setSocial]=useState({})
+    useEffect(() => {
+        const unsubscribe=loadLatestSocial()
+    
+          return ()=>{unsubscribe()}
+    }, []);
+
     const loadLatestContact=()=>{
         const productRef=collection(FIRESTORE_DB,'contact')
         const q = query(productRef, limit(1));
@@ -33,6 +40,25 @@ const FontLayout=function getLayout(page:any) {
     
           return subscriber
     }
+
+    const loadLatestSocial=()=>{
+      const productRef=collection(FIRESTORE_DB,'social')
+      const q = query(productRef, limit(1));
+      const subscriber=onSnapshot(q,{
+          next:(snapshot)=>{
+            snapshot.docs.forEach((doc)=>{
+              setSocial({
+                id:doc.id,
+                ...doc.data()
+              })
+              
+            })
+            
+          }
+        })
+  
+        return subscriber
+  }
     
 
     return (
@@ -129,30 +155,42 @@ const FontLayout=function getLayout(page:any) {
             {contact.email1}
           </p>
           <div className="d-flex pt-3">
-            <a
-              className="btn btn-square btn-primary rounded-circle me-2"
-              href=""
-            >
-              <i className="fab fa-twitter" />
-            </a>
-            <a
+            {social.instagram &&
+             <a
+             className="btn btn-square btn-primary rounded-circle me-2"
+             href=""
+           >
+             <i className="fab fa-instagram" />
+           </a>
+            }
+
+              {social.facebook &&
+              <a
               className="btn btn-square btn-primary rounded-circle me-2"
               href=""
             >
               <i className="fab fa-facebook-f" />
             </a>
-            <a
+            }
+
+          {social.youtube &&
+              <a
               className="btn btn-square btn-primary rounded-circle me-2"
               href=""
             >
-              <i className="fab fa-youtube" />
+             <i className="fab fa-youtube" />
             </a>
-            <a
+            }
+
+          {social.whatsapp &&
+              <a
               className="btn btn-square btn-primary rounded-circle me-2"
               href=""
             >
-              <i className="fab fa-linkedin-in" />
+             <i className="fab fa-whatsapp" />
             </a>
+            }
+          
           </div>
         </div>
         <div className="col-lg-3 col-md-6">

@@ -50,6 +50,11 @@ const AppMenu = () => {
                     to: '/pages/about'
                 },
                 {
+                    label: 'Social',
+                    icon: 'pi pi-fw pi-pencil',
+                    to: '/pages/social'
+                },
+                {
                     label: 'Messages',
                     icon: 'pi pi-fw pi-pencil',
                     to: '/pages/messages'

@@ -174,8 +174,9 @@ const Product = () => {
                     usages:usageInputFields,
                     diseases:diseaseInputFields,
                  })
-                 loadProducts()
+                loadProducts()
                 toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
+                fetch("https://moonlightherbal.vercel.app/api/revalivate")
             } else {
                 if(downloadURL.length>0){
                     const createdById=FIREBASE_AUTH.currentUser?.uid || ''

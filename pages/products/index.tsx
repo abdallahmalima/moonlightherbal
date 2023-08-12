@@ -5,7 +5,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { FIRESTORE_DB } from '../../firebase.config';
 import Link from 'next/link';
 
-const getProducts = async () => {
+export const getProducts = async () => {
   const products:any=[];
   const productRef=collection(FIRESTORE_DB,'products')
   const querySnapshot = await getDocs(productRef);

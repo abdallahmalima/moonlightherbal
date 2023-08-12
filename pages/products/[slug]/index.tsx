@@ -6,6 +6,7 @@ import ProductDetail from '../../../demo/components/ProductDetail';
 import { doc, getDoc } from 'firebase/firestore';
 import { FIRESTORE_DB } from '../../../firebase.config';
 import Link from 'next/link';
+import { getProducts } from '..';
 
 const getProduct= async (slug:string) => {
   const productRef = doc(FIRESTORE_DB, 'products', slug);
@@ -57,7 +58,18 @@ function ProductSingle({product}:any) {
 }
 ProductSingle.getLayout = FontLayout
 
-export async function getServerSideProps(context) {
+export const getStaticPaths = async () => {
+  const  products =  await getProducts();
+
+  const paths =  products.map((product) => ({
+    params: { slug: product.id },
+  }))
+ 
+  // { fallback: false } means other routes should 404
+  return { paths, fallback: false }
+}
+
+export async function getStaticProps(context) {
   try {
     const { params } = context;
     const { slug } = params;

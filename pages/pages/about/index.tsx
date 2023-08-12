@@ -22,6 +22,7 @@ import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } f
 import { v4 as uuidv4 } from 'uuid';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { Skeleton } from 'primereact/skeleton';
+import revalidate from '../../../lib/revalidate';
 
 
 const Product = () => {
@@ -259,6 +260,8 @@ const Product = () => {
             setProductImage2(null);
             setProductImage3(null);
             setProductImage4(null);
+
+            revalidate('about')
                  
     }
        }
@@ -290,7 +293,7 @@ const Product = () => {
                      setImage4(undefined)
                      loadProducts()
                      toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'About Created', life: 3000 });
-
+                   
                      setProducts(_products);
                      setProductDialog(false);
                      setProduct(emptyProduct);
@@ -300,6 +303,8 @@ const Product = () => {
                      setProductImage2(null);
                      setProductImage3(null);
                      setProductImage4(null);
+
+                     revalidate('about')
      }
 
        

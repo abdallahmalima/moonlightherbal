@@ -22,6 +22,7 @@ import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } f
 import { v4 as uuidv4 } from 'uuid';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { Skeleton } from 'primereact/skeleton';
+import revalidate from '../../../lib/revalidate';
 
 
 const Product = () => {
@@ -117,6 +118,7 @@ const Product = () => {
                  })
                  loadProducts()
                 toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Post Updated', life: 3000 });
+                revalidate('blog',product.id)
             } else {
                 if(downloadURL.length>0){
                     const createdById=FIREBASE_AUTH.currentUser?.uid || ''
@@ -128,7 +130,8 @@ const Product = () => {
                      })
                      loadProducts()
                      toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Post Created', life: 3000 });
-                }
+                     revalidate('blog',doc.id)
+                    }
                 
             }
 

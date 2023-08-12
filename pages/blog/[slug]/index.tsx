@@ -5,6 +5,7 @@ import BlogComp from '../../../demo/components/BlogComp';
 import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 import { FIRESTORE_DB } from '../../../firebase.config';
 import Link from 'next/link';
+import { getBlogs } from '..';
 
 const getBlog= async (slug:string) => {
   const blogRef = doc(FIRESTORE_DB, 'posts', slug);
@@ -54,8 +55,19 @@ function BlogDetail({blog}) {
 }
 BlogDetail.getLayout = FontLayout
 
+export const getStaticPaths = async () => {
+  const  blogs =  await getBlogs();
 
-export async function getServerSideProps(context) {
+  const paths =  blogs.map((blog) => ({
+    params: { slug: blog.id },
+  }))
+ 
+  // { fallback: false } means other routes should 404
+  return { paths, fallback: false }
+}
+
+
+export async function getStaticProps(context) {
   try {
     const { params } = context;
     const { slug } = params;

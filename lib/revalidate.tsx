@@ -1,4 +1,4 @@
-const revalidate=(queryPath,productId)=>{
+const revalidate=(queryPath,productId=-1)=>{
     
     
     fetch(`https://moonlightherbal.vercel.app/api/revalidate?path=${queryPath}&id=${productId}`)

@@ -119,6 +119,7 @@ const Product = () => {
                  })
                  loadProducts()
                 toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Social Media Link Updated', life: 3000 });
+               
             } else {
                 
                     const createdById=FIREBASE_AUTH.currentUser?.uid || ''

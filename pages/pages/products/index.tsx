@@ -196,7 +196,8 @@ const Product = () => {
                      })
                      loadProducts()
                      toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
-                }
+                     revalidate('products',doc.id)
+                    }
                 
             }
 

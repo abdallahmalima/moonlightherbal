@@ -192,7 +192,6 @@ const Product = () => {
                         image:downloadURL,
                         usages:usageInputFields,
                         diseases:diseaseInputFields,
-                        createdBy:createdById
                      })
                      loadProducts()
                      toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });

@@ -177,7 +177,7 @@ const Product = () => {
                 loadProducts()
                 toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
                  
-                fetch("https://moonlightherbal.vercel.app/api/revalidate")
+                fetch("http://localhost:3000/api/revalidate")
                 .then(response => {
                   if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);

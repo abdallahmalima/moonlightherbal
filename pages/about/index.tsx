@@ -87,7 +87,7 @@ function About({about}) {
 About.getLayout = FontLayout
 
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   try {
     const about =  await getAbout();
 

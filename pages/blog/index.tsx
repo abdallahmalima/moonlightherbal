@@ -49,7 +49,7 @@ function Blog({blogs}) {
 }
 Blog.getLayout = FontLayout
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
     try {
       const blogs =  await getBlogs();
   

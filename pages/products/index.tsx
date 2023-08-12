@@ -53,7 +53,7 @@ console.log(products)
 
 Product.getLayout = FontLayout
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   try {
     const  products =  await getProducts();
 

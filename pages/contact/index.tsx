@@ -101,7 +101,7 @@ const  Contact= ({contact})=> {
 
 Contact.getLayout = FontLayout
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
     try {
       const contact =  await getContact();
   

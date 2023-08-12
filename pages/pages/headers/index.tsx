@@ -43,6 +43,7 @@ const Product = () => {
     const dt = useRef<DataTable<Demo.Post[]>>(null);
     const fileUploadRef = useRef<FileUpload>(null);
     const [isLoading,setIsLoading]=useState(false)
+  
     
 
     useEffect(() => {
@@ -52,7 +53,7 @@ const Product = () => {
     }, []);
 
     const loadProducts=()=>{
-        setIsLoading(true)
+       setIsLoading(true)
         const productRef=collection(FIRESTORE_DB,'headers')
         const subscriber=onSnapshot(productRef,{
             next:(snapshot)=>{
@@ -64,7 +65,7 @@ const Product = () => {
                 })
                 
               })
-              setIsLoading(false)
+                 setIsLoading(false)
                 setProducts(products)
             }
           })
@@ -298,7 +299,14 @@ const Product = () => {
         );
     };
 
-
+    const imageSkeletonBodyTemplate = (rowData: Demo.Product) => {
+        return (
+            <>
+                <span className="p-column-title">Image</span>
+                <Skeleton width="7rem" height="4rem"></Skeleton>
+            </>
+        );
+    };
     const titleSkeletonBodyTemplate = (rowData: Demo.Post) => {
         return (
             <>
@@ -313,6 +321,31 @@ const Product = () => {
         );
     };
 
+    const descriptionSkeletonBodyTemplate = (rowData: Demo.Post) => {
+        return (
+            <>
+                 <span className="p-column-title">Description</span>
+                 <div className="flex">
+                <div style={{ flex: '1' }}>
+                    <Skeleton width="100%" className="mb-2"></Skeleton>
+                    <Skeleton width="75%"></Skeleton>
+                </div>
+            </div>
+            </>
+        );
+    };
+
+    const actionSkeletonBodyTemplate = (rowData: Demo.Product) => {
+        return (
+            <>
+               <div className='flex'>
+                <Skeleton shape="circle" size="3rem" className="mr-2"></Skeleton>
+                <Skeleton shape="circle" size="3rem" className="mr-2"></Skeleton>
+                </div>
+            </>
+        );
+    };
+
     const imageBodyTemplate = (rowData: Demo.Product) => {
         return (
             <>
@@ -322,14 +355,7 @@ const Product = () => {
         );
     };
 
-    const imageSkeletonBodyTemplate = (rowData: Demo.Product) => {
-        return (
-            <>
-                <span className="p-column-title">Image</span>
-                <Skeleton width="7rem" height="4rem"></Skeleton>
-            </>
-        );
-    };
+  
 
     const descriptionBodyTemplate = (rowData: Demo.Post) => {
         return (
@@ -368,16 +394,6 @@ const Product = () => {
     };
 
 
-    const actionSkeletonBodyTemplate = (rowData: Demo.Product) => {
-        return (
-            <>
-               <div className='flex'>
-                <Skeleton shape="circle" size="3rem" className="mr-2"></Skeleton>
-                <Skeleton shape="circle" size="3rem" className="mr-2"></Skeleton>
-                </div>
-            </>
-        );
-    };
 
 
     const actionBodyTemplate = (rowData: Demo.Product) => {
@@ -435,7 +451,7 @@ const Product = () => {
                     <Toast ref={toast} />
                     <Toolbar className="mb-4" right={rightToolbarTemplate}></Toolbar>
 
-                    {products.length==0 && <DataTable
+                    {isLoading && <DataTable
                         value={[{},{},{},{},{},{},{},{},{}]}
                     >
                         <Column selectionMode="multiple" headerStyle={{ width: '4rem' }}></Column>
@@ -444,7 +460,7 @@ const Product = () => {
                         <Column body={actionSkeletonBodyTemplate} headerStyle={{ minWidth: '10rem' }}></Column>
                     </DataTable>}
 
-                    {products.length>0 && <DataTable
+                    {!isLoading && <DataTable
                         ref={dt}
                         value={products}
                         selection={selectedProducts}

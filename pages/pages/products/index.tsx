@@ -21,6 +21,7 @@ import {FIRESTORE_DB,FIREBASE_AUTH}  from "../../../firebase.config";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 import { v4 as uuidv4 } from 'uuid';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { Skeleton } from 'primereact/skeleton';
 
 
 
@@ -52,6 +53,7 @@ const Product = () => {
 
     const [usageInputFields ,setUsageInputFields]=useState<any>([])
     const [diseaseInputFields ,setDiseaseInputFields]=useState<any>([])
+    const [isLoading,setIsLoading]=useState(false)
 
 
         const addUsageInputField = ()=>{
@@ -106,6 +108,7 @@ const Product = () => {
     }, []);
 
     const loadProducts=()=>{
+        setIsLoading(true)
         const productRef=collection(FIRESTORE_DB,'products')
         const subscriber=onSnapshot(productRef,{
             next:(snapshot)=>{
@@ -117,7 +120,7 @@ const Product = () => {
                 })
                 
               })
-              
+              setIsLoading(false)
                 setProducts(products)
             }
           })
@@ -473,14 +476,90 @@ const Product = () => {
             <Button label="Yes" icon="pi pi-check" text onClick={deleteSelectedProducts} />
         </>
     );
+
+    const imageSkeletonBodyTemplate = (rowData: Demo.Product) => {
+        return (
+            <>
+                <span className="p-column-title">Image</span>
+                <Skeleton width="7rem" height="4rem"></Skeleton>
+            </>
+        );
+    };
+    const titleSkeletonBodyTemplate = (rowData: Demo.Post) => {
+        return (
+            <>
+                 <span className="p-column-title">Name</span>
+                 <div className="flex">
+                <div style={{ flex: '1' }}>
+                    <Skeleton width="100%" className="mb-2"></Skeleton>
+                    <Skeleton width="75%"></Skeleton>
+                </div>
+            </div>
+            </>
+        );
+    };
+
+    const descriptionSkeletonBodyTemplate = (rowData: Demo.Post) => {
+        return (
+            <>
+                 <span className="p-column-title">Description</span>
+                 <div className="flex">
+                <div style={{ flex: '1' }}>
+                    <Skeleton width="100%" className="mb-2"></Skeleton>
+                    <Skeleton width="75%"></Skeleton>
+                </div>
+            </div>
+            </>
+        );
+    };
+
+    const priceSkeletonBodyTemplate = (rowData: Demo.Post) => {
+        return (
+            <>
+                 <span className="p-column-title">Price</span>
+                 <div className="flex">
+                <div style={{ flex: '1' }}>
+                    <Skeleton width="75%"></Skeleton>
+                </div>
+            </div>
+            </>
+        );
+    };
+
+
+    const actionSkeletonBodyTemplate = (rowData: Demo.Product) => {
+        return (
+            <>
+               <div className='flex'>
+                <Skeleton shape="circle" size="3rem" className="mr-2"></Skeleton>
+                <Skeleton shape="circle" size="3rem" className="mr-2"></Skeleton>
+                </div>
+            </>
+        );
+    };
+
+
     return (
         <div className="grid crud-demo">
             <div className="col-12">
                 <div className="card">
                     <Toast ref={toast} />
                     <Toolbar className="mb-4" right={rightToolbarTemplate}></Toolbar>
+                   
+                    {isLoading && <DataTable
+                        value={[{},{},{},{},{},{},{},{},{}]}
+                    >
+                        <Column selectionMode="multiple" headerStyle={{ width: '4rem' }}></Column>
+                        <Column header="Image" body={imageSkeletonBodyTemplate}></Column>
+                        <Column field="title" header="title" sortable body={titleSkeletonBodyTemplate} headerStyle={{ minWidth: '15rem' }}></Column>
+                        <Column field="description" header="description" sortable body={descriptionSkeletonBodyTemplate} headerStyle={{ minWidth: '15rem' }}></Column>
+                        <Column field="price" header="price" sortable body={priceSkeletonBodyTemplate} headerStyle={{ minWidth: '15rem' }}></Column>
+                        <Column body={actionSkeletonBodyTemplate} headerStyle={{ minWidth: '10rem' }}></Column>
+                    </DataTable>}
 
-                    <DataTable
+
+
+                    {!isLoading && <DataTable
                         ref={dt}
                         value={products}
                         selection={selectedProducts}
@@ -503,7 +582,8 @@ const Product = () => {
                         <Column field="description" header="description" body={descriptionBodyTemplate} sortable></Column>
                         <Column field="price" header="Price" body={priceBodyTemplate} sortable></Column>
                         <Column body={actionBodyTemplate} headerStyle={{ minWidth: '10rem' }}></Column>
-                    </DataTable>
+                    </DataTable>}
+
                     <Dialog visible={productDialog} style={{ width: '450px' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
     
                         <div className="field">

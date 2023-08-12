@@ -21,6 +21,7 @@ import {FIRESTORE_DB,FIREBASE_AUTH}  from "../../../firebase.config";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 import { v4 as uuidv4 } from 'uuid';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { Skeleton } from 'primereact/skeleton';
 
 
 const Product = () => {
@@ -41,6 +42,7 @@ const Product = () => {
     const toast = useRef<Toast>(null);
     const dt = useRef<DataTable<Demo.Post[]>>(null);
     const fileUploadRef = useRef<FileUpload>(null);
+    const [isLoading,setIsLoading]=useState(false)
     
 
     useEffect(() => {
@@ -50,6 +52,7 @@ const Product = () => {
     }, []);
 
     const loadProducts=()=>{
+        setIsLoading(true)
         const createdById = FIREBASE_AUTH.currentUser?.uid || ''
         console.log(createdById)
         const productRef=collection(FIRESTORE_DB,'social')
@@ -63,7 +66,7 @@ const Product = () => {
                 })
                 
               })
-              
+                 setIsLoading(false)
                 setProducts(products)
             }
           })
@@ -386,14 +389,60 @@ const Product = () => {
         </>
     );
 
+
+    const titleSkeletonBodyTemplate = (rowData: Demo.Post) => {
+        return (
+            <>
+                 <span className="p-column-title">Instagram</span>
+                 <div className="flex">
+                <div style={{ flex: '1' }}>
+                    <Skeleton width="100%" className="mb-2"></Skeleton>
+                </div>
+            </div>
+            </>
+        );
+    };
+
+    const descriptionSkeletonBodyTemplate = (rowData: Demo.Post) => {
+        return (
+            <>
+                 <span className="p-column-title">Facebook</span>
+                 <div className="flex">
+                <div style={{ flex: '1' }}>
+                    <Skeleton width="100%" className="mb-2"></Skeleton>
+                </div>
+            </div>
+            </>
+        );
+    };
+
+    const actionSkeletonBodyTemplate = (rowData: Demo.Product) => {
+        return (
+            <>
+               <div className='flex'>
+                <Skeleton shape="circle" size="3rem" className="mr-2"></Skeleton>
+                </div>
+            </>
+        );
+    };
+
     return (
         <div className="grid crud-demo">
             <div className="col-12">
                 <div className="card">
                     <Toast ref={toast} />
                     <Toolbar className="mb-4" right={rightToolbarTemplate}></Toolbar>
+                     
+                    {isLoading && <DataTable
+                        value={[{}]}
+                    >
+                        <Column selectionMode="multiple" headerStyle={{ width: '4rem' }}></Column>
+                        <Column field="instagram" header="instagram" sortable body={titleSkeletonBodyTemplate} headerStyle={{ minWidth: '15rem' }}></Column>
+                        <Column field="facebook" header="facebook" sortable body={descriptionSkeletonBodyTemplate} headerStyle={{ minWidth: '15rem' }}></Column>
+                        <Column body={actionSkeletonBodyTemplate} headerStyle={{ minWidth: '10rem' }}></Column>
+                    </DataTable>} 
 
-                    <DataTable
+                    {!isLoading && <DataTable
                         ref={dt}
                         value={products}
                         selection={selectedProducts}
@@ -414,7 +463,8 @@ const Product = () => {
                         <Column field="instagram" header="instagram" sortable body={titleBodyTemplate} headerStyle={{ minWidth: '15rem' }}></Column>
                         <Column field="facebook" header="facebook" body={descriptionBodyTemplate} sortable></Column>
                         <Column body={actionBodyTemplate} headerStyle={{ minWidth: '10rem' }}></Column>
-                    </DataTable>
+                    </DataTable>}
+
                     <Dialog visible={productDialog} style={{ width: '450px' }} header="Social Media Link Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
                        
 

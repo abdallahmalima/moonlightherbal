@@ -176,9 +176,23 @@ const Product = () => {
                  })
                 loadProducts()
                 toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
-               const res=await fetch("https://moonlightherbal.vercel.app/api/revalidate")
-               const tt=await res.json()
-               console.log(tt);
+                 
+                fetch("https://moonlightherbal.vercel.app/api/revalidate")
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                  }
+                  return response.json();
+                })
+                .then(data => {
+                  // Process the JSON data here
+                  console.log("Data:", data);
+                })
+                .catch(error => {
+                  // Handle any errors that occurred during the fetch
+                  console.error("Fetch error:", error);
+                });
+
             } else {
                 if(downloadURL.length>0){
             

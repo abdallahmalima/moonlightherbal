@@ -282,6 +282,8 @@ const Product = () => {
         setDeleteProductDialog(false);
         setProduct(emptyProduct);
         toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
+ 
+        revalidate('products',product.id)
     };
 
     const findIndexById = (id: string) => {

@@ -12,6 +12,7 @@ export default async function handler(req, res) {
       console.log(`/${path}/${id}`)
       await res.revalidate(`/${path}`)
       if(id!=-1){
+        console.log(`/${path}/${id}`)
         await res.revalidate(`/${path}/${id}`)
       }
       return res.json({ revalidated: true })

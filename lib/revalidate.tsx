@@ -1,7 +1,7 @@
 const revalidate=(queryPath,productId=-1)=>{
     
     
-    fetch(`https://moonlightherbal.vercel.app/api/revalidate?path=${queryPath}&id=${productId}`)
+    fetch(`http://localhost:3000/api/revalidate?path=${queryPath}&id=${productId}`)
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);

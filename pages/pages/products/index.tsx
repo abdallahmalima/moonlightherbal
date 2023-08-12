@@ -176,11 +176,12 @@ const Product = () => {
                  })
                 loadProducts()
                 toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
-                fetch("https://moonlightherbal.vercel.app/api/revalivate")
+               const res=await fetch("https://moonlightherbal.vercel.app/api/revalidate")
+               const tt=await res.json()
+               console.log(tt);
             } else {
                 if(downloadURL.length>0){
-                    const createdById=FIREBASE_AUTH.currentUser?.uid || ''
-                    console.log("mmmmmmmmmmmmmmmmmmmmm",createdById)
+            
                     const doc=await addDoc(collection(FIRESTORE_DB,'products'),{
                         name:_product.name,
                         description:_product.description,

@@ -22,6 +22,7 @@ import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } f
 import { v4 as uuidv4 } from 'uuid';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { Skeleton } from 'primereact/skeleton';
+import revalidate from '../../../lib/revalidate';
 
 
 
@@ -177,21 +178,9 @@ const Product = () => {
                 loadProducts()
                 toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
                  
-                fetch("https://moonlightherbal.vercel.app/api/revalidate")
-                .then(response => {
-                  if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                  }
-                  return response.json();
-                })
-                .then(data => {
-                  // Process the JSON data here
-                  console.log("Data:", data);
-                })
-                .catch(error => {
-                  // Handle any errors that occurred during the fetch
-                  console.error("Fetch error:", error);
-                });
+                revalidate('products',product.id)
+               
+
 
             } else {
                 if(downloadURL.length>0){

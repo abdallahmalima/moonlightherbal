@@ -82,7 +82,7 @@ export const getStaticPaths = async () => {
   }))
  
   // { fallback: false } means other routes should 404
-  return { paths, fallback: false }
+  return { paths, fallback: true }
 }
 
 export async function getStaticProps(context) {

@@ -112,6 +112,7 @@ export async function getStaticProps() {
         props: {
           contact,
         },
+        revalidate:1
       };
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -119,6 +120,7 @@ export async function getStaticProps() {
         props: {
           contact: null,
         },
+        revalidate:1
       };
     }
   }

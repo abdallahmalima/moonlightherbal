@@ -55,19 +55,9 @@ function BlogDetail({blog}) {
 }
 BlogDetail.getLayout = FontLayout
 
-export const getStaticPaths = async () => {
-  const  blogs =  await getBlogs();
-
-  const paths =  blogs.map((blog) => ({
-    params: { slug: blog.id },
-  }))
- 
-  // { fallback: false } means other routes should 404
-  return { paths, fallback: false }
-}
 
 
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
   try {
     const { params } = context;
     const { slug } = params;

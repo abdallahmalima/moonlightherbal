@@ -124,7 +124,7 @@ const Product = () => {
                  })
                  loadProducts()
                 toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Contact Updated', life: 3000 });
-                revalidate('contact')
+             
             } else {
                 
                     const createdById=FIREBASE_AUTH.currentUser?.uid || ''
@@ -140,7 +140,7 @@ const Product = () => {
                      })
                      loadProducts()
                      toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Contact Created', life: 3000 });
-                     revalidate('contact')
+                    
                 
             }
 

@@ -261,7 +261,7 @@ const Product = () => {
             setProductImage3(null);
             setProductImage4(null);
 
-            revalidate('about')
+            
                  
     }
        }
@@ -304,7 +304,7 @@ const Product = () => {
                      setProductImage3(null);
                      setProductImage4(null);
 
-                     revalidate('about')
+                    
      }
 
        

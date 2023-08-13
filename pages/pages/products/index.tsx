@@ -177,7 +177,7 @@ const Product = () => {
                  })
                 loadProducts()
                 toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
-                 
+                 console.log(product.id)
                 revalidate('products',product.id)
                
 
@@ -196,6 +196,8 @@ const Product = () => {
                      loadProducts()
                      toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
                      revalidate('products',doc.id)
+                     
+                     
                     }
                 
             }

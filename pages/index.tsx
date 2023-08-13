@@ -212,7 +212,7 @@ export async function getStaticProps() {
     const blog =  await loadLatestBlog();
 
     // Log the fetched data on the server side
-    console.log('Fetched data:', testimonials);
+    
 
     return {
       props: {
@@ -223,7 +223,7 @@ export async function getStaticProps() {
         products,
         blog,
       },
-      revalidate:1
+      revalidate:10
   
     };
   } catch (error) {

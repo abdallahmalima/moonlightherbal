@@ -41,7 +41,7 @@ function Testmonial() {
         <h1 className="display-6">What our clients say about our tea</h1>
       </div>
       <div
-        className="owl-carousel testimonial-carousel wow fadeInUp"
+        className="owl-carousel wow fadeInUp"
         data-wow-delay="0.5s"
       >
         <div className="testimonial-item p-4 p-lg-5">

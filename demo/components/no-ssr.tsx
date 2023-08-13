@@ -12,178 +12,151 @@ import { collection, getDocs, limit, onSnapshot, orderBy, query } from 'firebase
 import { FIRESTORE_DB } from '../../firebase.config';
 import HeaderItemEmpty from './HeaderItemEmpty';
 
-
-const  NoSSR= () =>{
-const [products,setProducts]=useState([])
-const [headers,setHeaders]=useState([])
-const [testimonials,setTestimonials]=useState([])
-const [blog,setBlog]=useState({})
-const [about,setAbout]=useState({})
-const [contact,setContact]=useState({})
-
-useEffect(() => {
-    const unsubscribe=loadHeaders()
-
-      return ()=>{unsubscribe()}
-}, []);
-
-useEffect(() => {
-    const unsubscribe=loadTestimonials()
-
-      return ()=>{unsubscribe()}
-}, []);
-
-useEffect(() => {
-    const unsubscribe=loadLatestBlog()
-
-      return ()=>{unsubscribe()}
-}, []);
-
-useEffect(() => {
-    const unsubscribe=loadLatestAbout()
-
-      return ()=>{unsubscribe()}
-}, []);
-
-useEffect(() => {
-    const unsubscribe=loadLatestContact()
-
-      return ()=>{unsubscribe()}
-}, []);
-
-useEffect(() => {
-    const unsubscribe=loadProducts()
-
-      return ()=>{unsubscribe()}
-}, []);
-
-
-const loadLatestBlog=()=>{
-    const productRef=collection(FIRESTORE_DB,'posts')
-    const q = query(productRef, limit(1));
-    const subscriber=onSnapshot(q,{
-        next:(snapshot)=>{
-          snapshot.docs.forEach((doc)=>{
-            setBlog({
-              id:doc.id,
-              ...doc.data()
-            })
-            
-          })
+// const loadLatestBlog=()=>{
+//   const productRef=collection(FIRESTORE_DB,'posts')
+//   const q = query(productRef, limit(1));
+//   const subscriber=onSnapshot(q,{
+//       next:(snapshot)=>{
+//         snapshot.docs.forEach((doc)=>{
+//           setBlog({
+//             id:doc.id,
+//             ...doc.data()
+//           })
           
-        }
-      })
+//         })
+        
+//       }
+//     })
 
-      return subscriber
+//     return subscriber
+// }
+
+
+// const loadLatestContact=()=>{
+//   const productRef=collection(FIRESTORE_DB,'contact')
+//   const q = query(productRef, limit(1));
+//   const subscriber=onSnapshot(q,{
+//       next:(snapshot)=>{
+//         snapshot.docs.forEach((doc)=>{
+//           setContact({
+//             id:doc.id,
+//             ...doc.data()
+//           })
+          
+//         })
+        
+//       }
+//     })
+
+//     return subscriber
+// }
+
+
+// const loadLatestAbout=()=>{
+//   const productRef=collection(FIRESTORE_DB,'about')
+//   const q = query(productRef, limit(1));
+//   const subscriber=onSnapshot(q,{
+//       next:(snapshot)=>{
+//         snapshot.docs.forEach((doc)=>{
+//           setAbout({
+//             id:doc.id,
+//             ...doc.data()
+//           })
+          
+//         })
+        
+//       }
+//     })
+
+//     return subscriber
+// }
+
+// const loadProducts=()=>{
+//   const productRef=collection(FIRESTORE_DB,'products')
+//   const q = query(productRef, limit(3));
+//   const subscriber=onSnapshot(q,{
+//       next:(snapshot)=>{
+//         const products:any=[];
+//         snapshot.docs.forEach((doc)=>{
+//           products.push({
+//             id:doc.id,
+//             ...doc.data()
+//           })
+          
+//         })
+        
+//           setProducts(products)
+//       }
+//     })
+
+//     return subscriber
+// }
+
+// const loadHeaders=async()=>{
+// const headers:any=[];
+//   const productRef=collection(FIRESTORE_DB,'headers')
+//   const q = query(productRef, limit(3));
+//   const subscriber=onSnapshot(q,{
+//       next:(snapshot)=>{
+//         const headers:any=[];
+//         snapshot.docs.forEach((doc)=>{
+//           headers.push({
+//             id:doc.id,
+//             ...doc.data()
+//           })
+          
+//         })
+        
+//           headers
+//       }
+//     })
+
+//     return headers
+// }
+
+// const loadTestimonials=()=>{
+//   const productRef=collection(FIRESTORE_DB,'testimonials')
+//   const q = query(productRef, limit(3));
+//   const subscriber=onSnapshot(q,{
+//       next:(snapshot)=>{
+//         const testimonials:any=[];
+//         snapshot.docs.forEach((doc)=>{
+//           testimonials.push({
+//             id:doc.id,
+//             ...doc.data()
+//           })
+          
+//         })
+        
+//           setTestimonials(testimonials)
+//       }
+//     })
+
+//     return subscriber
+// }
+
+
+export const loadHeaders = async () => {
+  const products:any=[];
+  const productRef=collection(FIRESTORE_DB,'headers')
+  const querySnapshot = await getDocs(productRef);
+  querySnapshot.forEach((doc)=>{
+    products.push({
+      id:doc.id,
+      ...doc.data()
+    })
+  })
+
+    return products
 }
 
-
-const loadLatestContact=()=>{
-    const productRef=collection(FIRESTORE_DB,'contact')
-    const q = query(productRef, limit(1));
-    const subscriber=onSnapshot(q,{
-        next:(snapshot)=>{
-          snapshot.docs.forEach((doc)=>{
-            setContact({
-              id:doc.id,
-              ...doc.data()
-            })
-            
-          })
-          
-        }
-      })
-
-      return subscriber
-}
-
-
-const loadLatestAbout=()=>{
-    const productRef=collection(FIRESTORE_DB,'about')
-    const q = query(productRef, limit(1));
-    const subscriber=onSnapshot(q,{
-        next:(snapshot)=>{
-          snapshot.docs.forEach((doc)=>{
-            setAbout({
-              id:doc.id,
-              ...doc.data()
-            })
-            
-          })
-          
-        }
-      })
-
-      return subscriber
-}
-
-const loadProducts=()=>{
-    const productRef=collection(FIRESTORE_DB,'products')
-    const q = query(productRef, limit(3));
-    const subscriber=onSnapshot(q,{
-        next:(snapshot)=>{
-          const products:any=[];
-          snapshot.docs.forEach((doc)=>{
-            products.push({
-              id:doc.id,
-              ...doc.data()
-            })
-            
-          })
-          
-            setProducts(products)
-        }
-      })
-
-      return subscriber
-}
-
-const loadHeaders=()=>{
-    const productRef=collection(FIRESTORE_DB,'headers')
-    const q = query(productRef, limit(3));
-    const subscriber=onSnapshot(q,{
-        next:(snapshot)=>{
-          const headers:any=[];
-          snapshot.docs.forEach((doc)=>{
-            headers.push({
-              id:doc.id,
-              ...doc.data()
-            })
-            
-          })
-          
-            setHeaders(headers)
-        }
-      })
-
-      return subscriber
-}
-
-const loadTestimonials=()=>{
-    const productRef=collection(FIRESTORE_DB,'testimonials')
-    const q = query(productRef, limit(3));
-    const subscriber=onSnapshot(q,{
-        next:(snapshot)=>{
-          const testimonials:any=[];
-          snapshot.docs.forEach((doc)=>{
-            testimonials.push({
-              id:doc.id,
-              ...doc.data()
-            })
-            
-          })
-          
-            setTestimonials(testimonials)
-        }
-      })
-
-      return subscriber
-}
+const  NoSSR= ({headers}) =>{
+console.log(headers)
     return (
         <>
      
         {/* Carousel Start */}
-        <div className="container-fluid px-0 mb-5">
+        {/* <div className="container-fluid px-0 mb-5">
           <div
             id="header-carousel"
             className="carousel slide carousel-fade"
@@ -224,9 +197,9 @@ const loadTestimonials=()=>{
               <span className="visually-hidden">Next</span>
             </button>
           </div>
-        </div>
+        </div> */}
         {/* Carousel End */}
-       <AboutUs
+       {/* <AboutUs
         image1={about.image1} 
         image2={about.image2} 
         image3={about.image3} 
@@ -256,9 +229,36 @@ const loadTestimonials=()=>{
          street={contact.street}
          region={contact.region}
          description={contact.description}
-       />
+       /> */}
       </>
     );
+}
+
+
+
+
+export async function getServerSideProps() {
+  try {
+    const headers =  await loadHeaders();
+
+    // Log the fetched data on the server side
+    console.log('Fetched data:', headers);
+
+    return {
+      props: {
+        headers,
+      },
+  
+    };
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return {
+      props: {
+        headers: null,
+      },
+
+    };
+  }
 }
 
 export default NoSSR;

@@ -21,7 +21,7 @@ export const getProducts = async () => {
 }
 
 const Product= ({ products }:any)=> {
-console.log(products)
+
     return (
         <>
   {/* Page Header Start */}

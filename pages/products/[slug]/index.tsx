@@ -3,7 +3,7 @@ import FontLayout from '../../../demo/components/FontLayout';
 import BlogItem from '../../../demo/components/BlogItem';
 import BlogComp from '../../../demo/components/BlogComp';
 import ProductDetail from '../../../demo/components/ProductDetail';
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { FIRESTORE_DB } from '../../../firebase.config';
 import Link from 'next/link';
 import { getProducts } from '..';
@@ -58,24 +58,9 @@ function ProductSingle({product}:any) {
 }
 ProductSingle.getLayout = FontLayout
 
-export const getProductss = async () => {
-  
-  const products:any=[];
-  const productRef=collection(FIRESTORE_DB,'products')
-  const querySnapshot = await getDocs(productRef);
-  querySnapshot.forEach((doc)=>{
-    products.push({
-      id:doc.id,
-      ...doc.data()
-    })
-  })
-
-    return products
-}
-
 
 export const getStaticPaths = async () => {
-  const  products =  await getProductss();
+  const  products =  await getProducts();
 
   const paths =  products.map((product) => ({
     params: { slug: product.id },

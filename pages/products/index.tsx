@@ -6,6 +6,7 @@ import { FIRESTORE_DB } from '../../firebase.config';
 import Link from 'next/link';
 
 export const getProducts = async () => {
+  
   const products:any=[];
   const productRef=collection(FIRESTORE_DB,'products')
   const querySnapshot = await getDocs(productRef);

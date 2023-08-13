@@ -472,7 +472,7 @@ const Product = () => {
             );
 
             
-            const uploadTaskSecond = uploadBytesResumable(storageRef, secondProductImage);
+            const uploadTaskSecond = uploadBytesResumable(storageRef_second, secondProductImage);
             uploadTaskSecond.on('state_changed', 
               (snapshot) => {
                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;

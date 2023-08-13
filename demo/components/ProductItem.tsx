@@ -14,6 +14,11 @@ type ProductItemType={
   
 
 function ProductItem({id,name,description,price,image}:ProductItemType) {
+
+
+  const formatCurrency = (value: number) => {
+    return value.toLocaleString('en-US', { style: 'currency', currency: 'TSH',minimumFractionDigits: 0 });
+};
    
     return (
         <>
@@ -40,7 +45,7 @@ function ProductItem({id,name,description,price,image}:ProductItemType) {
                     <p>
                       {description}
                     </p>
-                    <h4 className="text-primary">Tsh{price}</h4>
+                    <h4 className="text-primary">{formatCurrency(price)}</h4>
                   </div>
                   <div className="store-overlay">
                     <Link href={`/products/${id}`} className="btn btn-primary rounded-pill py-2 px-4 m-2">

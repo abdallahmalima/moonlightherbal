@@ -59,18 +59,18 @@ function ProductSingle({product}:any) {
 ProductSingle.getLayout = FontLayout
 
 
-export const getStaticPaths = async () => {
-  const  products =  await getProducts();
+// export const getStaticPaths = async () => {
+//   const  products =  await getProducts();
 
-  const paths =  products.map((product) => ({
-    params: { slug: product.id },
-  }))
- //
-  // { fallback: false } means other routes should 404
-  return { paths, fallback: false }
-}
+//   const paths =  products.map((product) => ({
+//     params: { slug: product.id },
+//   }))
+//  //
+//   // { fallback: false } means other routes should 404
+//   return { paths, fallback: false }
+// }
 
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
   try {
     const { params } = context;
     const { slug } = params;
@@ -85,7 +85,6 @@ export async function getStaticProps(context) {
       props: {
         product,
       },
-      revalidate: 1
 
     };
   } catch (error) {
@@ -94,7 +93,6 @@ export async function getStaticProps(context) {
       props: {
         product: null,
       },
-      revalidate: 1
     };
   }
 }

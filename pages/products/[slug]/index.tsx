@@ -65,7 +65,7 @@ export const getStaticPaths = async () => {
   const paths =  products.map((product) => ({
     params: { slug: product.id },
   }))
- 
+ //
   // { fallback: false } means other routes should 404
   return { paths, fallback: false }
 }
@@ -94,6 +94,7 @@ export async function getStaticProps(context) {
       props: {
         product: null,
       },
+      revalidate: 1
     };
   }
 }

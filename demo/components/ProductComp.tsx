@@ -39,7 +39,7 @@ function ProductComp({isHome=false,products}:{isHome:boolean,products:ProductTyp
         <span className="p-input-icon-left md:mr-8">
          <i className="pi pi-search" />
          <InputText 
-             style={{width:'22rem'}}
+             style={{width:'19rem'}}
              className="p-inputtext-md " 
              placeholder="Tafuta Hapa mf: kifua,miguu,mafua" 
              value={value}

@@ -160,6 +160,7 @@ const Product = () => {
               }, 
               (error) => {
                 // Handle unsuccessful uploads
+                console.log(error.message)
               }, 
               () => {
                 getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {

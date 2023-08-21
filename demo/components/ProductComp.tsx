@@ -36,7 +36,7 @@ function ProductComp({isHome=false,products}:{isHome:boolean,products:ProductTyp
         <>
         <div className="container-xxl py-5">
        {!isHome && <div className="flex sm:justify-content-center md:justify-content-end py-3">
-        <span className="p-input-icon-left md:mr-8">
+        <span className="p-input-icon-left ml-3 md:mr-8 ">
          <i className="pi pi-search" />
          <InputText 
              style={{width:'19rem'}}

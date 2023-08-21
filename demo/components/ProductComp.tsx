@@ -35,11 +35,11 @@ function ProductComp({isHome=false,products}:{isHome:boolean,products:ProductTyp
     return (
         <>
         <div className="container-xxl py-5">
-       {!isHome && <div className="flex justify-content-end p-3">
-        <span className="p-input-icon-left mr-8">
+       {!isHome && <div className="flex sm:justify-content-center md:justify-content-end py-3">
+        <span className="p-input-icon-left md:mr-8">
          <i className="pi pi-search" />
          <InputText 
-             style={{width:'23rem'}}
+             style={{width:'22rem'}}
              className="p-inputtext-md " 
              placeholder="Tafuta Hapa mf: kifua,miguu,mafua" 
              value={value}

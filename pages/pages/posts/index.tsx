@@ -23,6 +23,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { Skeleton } from 'primereact/skeleton';
 import revalidate from '../../../lib/revalidate';
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 
 const Product = () => {
@@ -44,6 +45,7 @@ const Product = () => {
     const dt = useRef<DataTable<Demo.Post[]>>(null);
     const fileUploadRef = useRef<FileUpload>(null);
     const [isLoading,setIsLoading]=useState(false)
+    const [isLoadingSubmit,setIsLoadingSubmit]=useState(false)
     
 
     useEffect(() => {
@@ -109,7 +111,7 @@ const Product = () => {
             let _products = [...products];
             let _product = { ...product };
             if (product.id) {
-    
+              setIsLoadingSubmit(true)
                  const ref=doc(FIRESTORE_DB,`posts/${product.id}`)
                  await updateDoc(ref,{
                     title:_product.title,
@@ -120,6 +122,7 @@ const Product = () => {
                 toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Post Updated', life: 3000 });
                 
             } else {
+                setIsLoadingSubmit(true)
                 if(downloadURL.length>0){
                     const createdById=FIREBASE_AUTH.currentUser?.uid || ''
                     const doc=await addDoc(collection(FIRESTORE_DB,'posts'),{
@@ -139,12 +142,14 @@ const Product = () => {
             setProductDialog(false);
             setProduct(emptyProduct);
             setProductImage(null);
+            setIsLoadingSubmit(false)
         }
 
 
     }
 
     const saveWithImage=async(handleSave:(downloadURL:string)=>void)=>{
+            setIsLoadingSubmit(true)
             const storage = getStorage();
             const imageExtension = productImage?.name.split('.').pop();
             const imagePath = product.id ? product.image : `images/${uuidv4()}.${imageExtension}`; 
@@ -397,7 +402,7 @@ const Product = () => {
     const productDialogFooter = (
         <>
             <Button label="Cancel" icon="pi pi-times" text onClick={hideDialog} />
-            <Button label="Save" icon="pi pi-check" text onClick={saveProduct}  disabled={!isFormFilled()}/>
+            <Button label={!isLoadingSubmit? `Save` :<ProgressSpinner style={{width: '29px', height: '29px'}}/>} icon={!isLoadingSubmit && `pi pi-check`} text onClick={saveProduct}  disabled={!isFormFilled() || isLoadingSubmit}/>
         </>
     );
     const deleteProductDialogFooter = (

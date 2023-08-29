@@ -22,6 +22,7 @@ import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } f
 import { v4 as uuidv4 } from 'uuid';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { Skeleton } from 'primereact/skeleton';
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 
 const Product = () => {
@@ -43,6 +44,7 @@ const Product = () => {
     const dt = useRef<DataTable<Demo.Post[]>>(null);
     const fileUploadRef = useRef<FileUpload>(null);
     const [isLoading,setIsLoading]=useState(false)
+    const [isLoadingSubmit,setIsLoadingSubmit]=useState(false);
     
 
     useEffect(() => {
@@ -109,7 +111,7 @@ const Product = () => {
             let _products = [...products];
             let _product = { ...product };
             if (product.id) {
-    
+                setIsLoadingSubmit(true)
                  const ref=doc(FIRESTORE_DB,`social/${product.id}`)
                  await updateDoc(ref,{
                     instagram:_product.instagram,
@@ -121,7 +123,7 @@ const Product = () => {
                 toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Social Media Link Updated', life: 3000 });
                
             } else {
-                
+                    setIsLoadingSubmit(true)
                     const createdById=FIREBASE_AUTH.currentUser?.uid || ''
                     const doc=await addDoc(collection(FIRESTORE_DB,'social'),{
                         instagram:_product.instagram,
@@ -139,12 +141,13 @@ const Product = () => {
             setProductDialog(false);
             setProduct(emptyProduct);
             setProductImage(null);
-        
+            setIsLoadingSubmit(false)
 
 
     }
 
     const saveWithImage=async(handleSave:(downloadURL:string)=>void)=>{
+        setIsLoadingSubmit(true)
             const storage = getStorage();
             const imageExtension = productImage?.name.split('.').pop();
             const imagePath = product.id ? product.image : `images/${uuidv4()}.${imageExtension}`; 
@@ -371,10 +374,12 @@ const Product = () => {
 
 
 
+
+
     const productDialogFooter = (
         <>
             <Button label="Cancel" icon="pi pi-times" text onClick={hideDialog} />
-            <Button label="Save" icon="pi pi-check" text onClick={saveProduct} />
+            <Button label={!isLoadingSubmit? `Save` :<ProgressSpinner style={{width: '29px', height: '29px'}}/>} icon={!isLoadingSubmit && `pi pi-check`} text onClick={saveProduct}  disabled={isLoadingSubmit}/>
         </>
     );
     const deleteProductDialogFooter = (

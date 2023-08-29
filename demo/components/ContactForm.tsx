@@ -1,19 +1,21 @@
 import { addDoc, collection } from 'firebase/firestore';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { FIRESTORE_DB } from '../../firebase.config';
 import { Toast } from 'primereact/toast';
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 
 function ContactForm() {
     const toast = useRef<Toast>(null);
     const formRef = useRef<HTMLFormElement>(null);
+    const [isLoadingSubmit,setIsLoadingSubmit]=useState(false);
 
 
     const handleFormSubmit= async(e:any)=>{
         e.preventDefault()
         const formData=new FormData(e.target)
         formData.get('email')
-         
+        setIsLoadingSubmit(true)
         const doc=await addDoc(collection(FIRESTORE_DB,'messages'),{
             name:formData.get('name'),
             email:formData.get('email'),
@@ -27,8 +29,9 @@ function ContactForm() {
            headers: {
                'Accept': 'application/json'
            }});
-
+          
          formRef.current?.reset();
+         setIsLoadingSubmit(false)
 
          toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Message Sent Sucessfully', life: 3000 });
     }
@@ -91,8 +94,9 @@ function ContactForm() {
                       <button
                         className="btn btn-primary rounded-pill py-3 px-5"
                         type="submit"
+                        disabled={isLoadingSubmit}
                       >
-                        Send Message
+                       {isLoadingSubmit?<ProgressSpinner style={{width: '29px', height: '29px'}}/>: `Send Message`}
                       </button>
                     </div>
                   </div>

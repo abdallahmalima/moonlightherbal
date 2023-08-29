@@ -82,7 +82,7 @@ const  Contact= ({contact})=> {
                 <div className="h-100">
                   <iframe
                     className="w-100 rounded"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3001156.4288297426!2d-78.01371936852176!3d42.72876761954724!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4ccc4bf0f123a5a9%3A0xddcfc6c1de189567!2sNew%20York%2C%20USA!5e0!3m2!1sen!2sbd!4v1603794290143!5m2!1sen!2sbd"
+                    src=" https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d1991.6319183679843!2d37.52275781932373!3d-3.2846551756208497!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zM8KwMTcnMDQuMyJTIDM3wrAzMScyNS4xIkU!5e0!3m2!1sen!2stz!4v1693348275191!5m2!1sen!2stz"
                     frameBorder={0}
                     style={{ height: "100%", minHeight: 300, border: 0 }}
                     aria-hidden="false"

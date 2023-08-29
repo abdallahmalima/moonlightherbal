@@ -23,6 +23,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { Skeleton } from 'primereact/skeleton';
 import revalidate from '../../../lib/revalidate';
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 
 const Product = () => {
@@ -60,6 +61,7 @@ const Product = () => {
     const fileUploadRef = useRef<FileUpload>(null);
     const secondFileUploadRef = useRef<FileUpload>(null);
     const [isLoading,setIsLoading]=useState(false)
+    const [isLoadingSubmit,setIsLoadingSubmit]=useState(false);
     
     useEffect(()=>{
         if(postImageOne &&
@@ -212,7 +214,7 @@ const Product = () => {
             let _products = [...products];
             let _product = { ...product };
             if (product.id) {
-    
+                setIsLoadingSubmit(true)
                  const ref=doc(FIRESTORE_DB,`about/${product.id}`)
                  await updateDoc(ref,{
                     title:_product.title,
@@ -260,6 +262,7 @@ const Product = () => {
             setProductImage2(null);
             setProductImage3(null);
             setProductImage4(null);
+            setIsLoadingSubmit(false)
 
             
                  
@@ -268,6 +271,7 @@ const Product = () => {
     }
     const handleSaveProduct=async ()=>{
      if(product.title?.trim()){
+        setIsLoadingSubmit(true)
         let _products = [...products];
         let _product = { ...product };
         const createdById=FIREBASE_AUTH.currentUser?.uid || ''
@@ -303,6 +307,7 @@ const Product = () => {
                      setProductImage2(null);
                      setProductImage3(null);
                      setProductImage4(null);
+                     setIsLoadingSubmit(false)
 
                     
      }
@@ -314,6 +319,7 @@ const Product = () => {
 
 
     const saveWithImage=async()=>{
+        setIsLoadingSubmit(true)
         if(productImage && secondProductImage && productImage1 && productImage2 && productImage3 && productImage4){
             const storage = getStorage();
             const imageExtension = productImage?.name.split('.').pop();
@@ -718,7 +724,7 @@ const Product = () => {
     const productDialogFooter = (
         <>
             <Button label="Cancel" icon="pi pi-times" text onClick={hideDialog} />
-            <Button label="Save" icon="pi pi-check" text onClick={saveProduct}  disabled={!isFormFilled()}/>
+            <Button label={!isLoadingSubmit? `Save` :<ProgressSpinner style={{width: '29px', height: '29px'}}/>} icon={!isLoadingSubmit && `pi pi-check`} text onClick={saveProduct}  disabled={!isFormFilled() || isLoadingSubmit}/>
         </>
     );
     const deleteProductDialogFooter = (

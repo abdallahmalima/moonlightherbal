@@ -54,7 +54,7 @@ export async function getStaticProps() {
       const blogs =  await getBlogs();
   
       // Log the fetched data on the server side
-      console.log('Fetched data:', blogs);
+      // console.log('Fetched data:', blogs);
   
       return {
         props: {

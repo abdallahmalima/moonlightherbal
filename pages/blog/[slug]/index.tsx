@@ -69,7 +69,7 @@ export async function getStaticPaths() {
 
   return {
     paths:products.map((p:any)=>({params:{slug:p.id}})),
-    fallback:true
+    fallback:false,
   }
 }
 
@@ -82,7 +82,7 @@ export async function getStaticProps(context) {
     const blog =  await getBlog (slug);
 
     // Log the fetched data on the server side
-    console.log('Fetched data:', blog);
+    // console.log('Fetched data:', blog);
 
     return {
       props: {

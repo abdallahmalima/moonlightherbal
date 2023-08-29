@@ -6,6 +6,7 @@ import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firesto
 import { FIRESTORE_DB } from '../../../firebase.config';
 import Link from 'next/link';
 import { getBlogs } from '..';
+import { useRouter } from 'next/router';
 
 const getBlog= async (slug:string) => {
   const blogRef = doc(FIRESTORE_DB, 'posts', slug);
@@ -19,7 +20,15 @@ const getBlog= async (slug:string) => {
 };
 
 function BlogDetail({blog}) {
-  console.log(blog)
+  const router = useRouter()
+
+  // If the page is not yet generated, this will be displayed
+  // initially until getStaticProps() finishes running
+  if (router.isFallback) {
+    return <div>Loading...</div>
+  }
+
+  // console.log(blog)
     return (
       <>
         {/* Page Header Start */}
@@ -69,7 +78,7 @@ export async function getStaticPaths() {
 
   return {
     paths:products.map((p:any)=>({params:{slug:p.id}})),
-    fallback:false,
+    fallback:true,
   }
 }
 

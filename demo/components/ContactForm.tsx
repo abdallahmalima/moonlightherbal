@@ -3,11 +3,13 @@ import React, { useRef } from 'react';
 import { FIRESTORE_DB } from '../../firebase.config';
 import { Toast } from 'primereact/toast';
 
+
 function ContactForm() {
     const toast = useRef<Toast>(null);
     const formRef = useRef<HTMLFormElement>(null);
 
-    const handleSubmit= async(e:any)=>{
+
+    const handleFormSubmit= async(e:any)=>{
         e.preventDefault()
         const formData=new FormData(e.target)
         formData.get('email')
@@ -18,6 +20,14 @@ function ContactForm() {
             subject:formData.get('subject'),
             message:formData.get('message'),
          })
+         var data = new FormData(e.target);
+          await fetch('https://formspree.io/f/mknerakr', {
+           method: 'POST',
+           body: data,
+           headers: {
+               'Accept': 'application/json'
+           }});
+
          formRef.current?.reset();
 
          toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'Message Sent Sucessfully', life: 3000 });
@@ -25,7 +35,7 @@ function ContactForm() {
     return (
         <>
               
-            <form ref={formRef}  onSubmit={handleSubmit}>
+            <form ref={formRef}  onSubmit={handleFormSubmit}>
                 <Toast ref={toast} />
                   <div className="row g-3">
                     <div className="col-md-6">

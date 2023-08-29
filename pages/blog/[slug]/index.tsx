@@ -56,8 +56,24 @@ function BlogDetail({blog}) {
 BlogDetail.getLayout = FontLayout
 
 
+export async function getStaticPaths() {
+  const products:any=[];
+  const productRef=collection(FIRESTORE_DB,'posts')
+  const querySnapshot = await getDocs(productRef);
+  querySnapshot.forEach((doc)=>{
+    products.push({
+      id:doc.id,
+      ...doc.data()
+    })
+  })
 
-export async function getServerSideProps(context) {
+  return {
+    paths:products.map((p:any)=>({params:{slug:p.id}})),
+    fallback:true
+  }
+}
+
+export async function getStaticProps(context) {
   try {
     const { params } = context;
     const { slug } = params;
@@ -82,5 +98,31 @@ export async function getServerSideProps(context) {
     };
   }
 }
+
+// export async function getServerSideProps(context) {
+//   try {
+//     const { params } = context;
+//     const { slug } = params;
+
+
+//     const blog =  await getBlog (slug);
+
+//     // Log the fetched data on the server side
+//     console.log('Fetched data:', blog);
+
+//     return {
+//       props: {
+//         blog,
+//       },
+//     };
+//   } catch (error) {
+//     console.error('Error fetching data:', error);
+//     return {
+//       props: {
+//         blog: null,
+//       },
+//     };
+//   }
+// }
 
 export default BlogDetail;

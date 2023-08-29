@@ -7,6 +7,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { FIRESTORE_DB } from '../../../firebase.config';
 import Link from 'next/link';
 import { getProducts } from '..';
+import { useRouter } from 'next/router';
 
 const getProduct= async (slug:string) => {
   const productRef = doc(FIRESTORE_DB, 'products', slug);
@@ -20,6 +21,15 @@ const getProduct= async (slug:string) => {
 };
 
 function ProductSingle({product}:any) {
+    
+  const router = useRouter()
+
+  // If the page is not yet generated, this will be displayed
+  // initially until getStaticProps() finishes running
+  if (router.isFallback) {
+    return <div>Loading...</div>
+  }
+
     return (
       <>
         {/* Page Header Start */}
@@ -59,18 +69,18 @@ function ProductSingle({product}:any) {
 ProductSingle.getLayout = FontLayout
 
 
-// export const getStaticPaths = async () => {
-//   const  products =  await getProducts();
+export const getStaticPaths = async () => {
+  const  products =  await getProducts();
 
-//   const paths =  products.map((product) => ({
-//     params: { slug: product.id },
-//   }))
-//  //
-//   // { fallback: false } means other routes should 404
-//   return { paths, fallback: false }
-// }
+  const paths =  products.map((product) => ({
+    params: { slug: product.id },
+  }))
+ //
+  
+  return { paths, fallback: true }
+}
 
-export async function getServerSideProps(context) {
+export async function getStaticProps(context) {
   try {
     const { params } = context;
     const { slug } = params;
@@ -79,7 +89,7 @@ export async function getServerSideProps(context) {
     const product =  await getProduct (slug);
 
     // Log the fetched data on the server side
-    console.log('Fetched data:', product);
+    // console.log('Fetched data:', product);
 
     return {
       props: {

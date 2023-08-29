@@ -28,7 +28,7 @@ function BlogDetail({blog}) {
     return <div>Loading...</div>
   }
 
-  // console.log(blog)
+ 
     return (
       <>
         {/* Page Header Start */}

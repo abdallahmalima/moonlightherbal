@@ -13,7 +13,7 @@ function Testmonial({testimonials}:any) {
               style={{ maxWidth: 500 }}
             >
               <h2 className=" fw-medium fst-italic text-white">Testimonial</h2>
-              <h1 className="display-6">What our clients say about our tea</h1>
+              <h1 className="display-6">What our clients say about our products</h1>
             </div>
             <div
             className='d-md-flex flex-md-row'

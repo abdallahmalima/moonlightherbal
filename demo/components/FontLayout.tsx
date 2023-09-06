@@ -212,7 +212,7 @@ const FontLayout=function getLayout(page:any) {
         </div>
         <div className="col-lg-3 col-md-6">
           <h4 className="text-primary mb-4">Newsletter</h4>
-          <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
+          <p>Subscribe to our newsletter by adding your email.</p>
           <div className="position-relative w-100">
             <input
               className="form-control bg-transparent w-100 py-3 ps-4 pe-5"
@@ -238,7 +238,7 @@ const FontLayout=function getLayout(page:any) {
         <div className="col-md-6 text-center text-md-start mb-3 mb-md-0">
           ©{" "}
           <a className="fw-medium" href="#">
-            www.moonlightherbal.com
+            www.moonlightherbal.co.tz
           </a>
           , All Right Reserved.
         </div>

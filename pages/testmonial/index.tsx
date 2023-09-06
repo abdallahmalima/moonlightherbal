@@ -38,7 +38,7 @@ function Testmonial() {
         style={{ maxWidth: 500 }}
       >
         <p className="fs-5 fw-medium fst-italic text-primary">Testimonial</p>
-        <h1 className="display-6">What our clients say about our tea</h1>
+        <h1 className="display-6">What our clients say about our products</h1>
       </div>
       <div
         className="owl-carousel wow fadeInUp"

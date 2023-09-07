@@ -15,8 +15,8 @@ function HeaderItem({title,image,isActive=false}:HeaderItemType) {
               <div className={`carousel-item ${isActive && 'active'}`}>
                 <Image
                    src={image}
-                    width={0}
-                    height={0}
+                    width={1920}
+                    height={1080}
                     sizes="300vw"
                     style={{ width: '100%', height: '100%' }} // optional
                     alt="Image"

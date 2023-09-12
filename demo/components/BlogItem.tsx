@@ -40,9 +40,9 @@ function BlogItem({isHome=false,isDetail=false,id,title,description,image}:BlogI
                 <div className="section-title">
                   <h2 className="display-6">{title}</h2>
                 </div>
-                <p className="mb-4">
-                  {isDetail? description :truncateStringToWords(description,77)}
-                </p>
+                <div className="mb-4">
+                  {isDetail? <div dangerouslySetInnerHTML={{__html:description}} /> : <div dangerouslySetInnerHTML={{__html:truncateStringToWords(description,77)}} /> }
+                </div>
                
                {!isDetail && 
                   <Link href={`/blog/${id}`} className="btn btn-light rounded-pill py-3 px-5 text-primary">Read More</Link>

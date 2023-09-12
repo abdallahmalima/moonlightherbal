@@ -8,6 +8,7 @@ import { FileUpload } from 'primereact/fileupload';
 import { InputNumber, InputNumberValueChangeEvent } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
+import { Editor } from 'primereact/editor';
 import { RadioButton, RadioButtonChangeEvent } from 'primereact/radiobutton';
 import { Rating } from 'primereact/rating';
 import { Toast } from 'primereact/toast';
@@ -46,6 +47,7 @@ const Product = () => {
     const fileUploadRef = useRef<FileUpload>(null);
     const [isLoading,setIsLoading]=useState(false)
     const [isLoadingSubmit,setIsLoadingSubmit]=useState(false)
+    const [text,setText]=useState<string | null>(null)
     
 
     useEffect(() => {
@@ -334,7 +336,8 @@ const Product = () => {
         return (
             <>
                 <span className="p-column-title">Description</span>
-                { truncateStringToWords(rowData.description, 35)}
+                {/* { truncateStringToWords(rowData.description, 35)} */}
+                <div dangerouslySetInnerHTML={{__html:truncateStringToWords(rowData.description, 35)}} />
             </>
         );
     };
@@ -520,7 +523,8 @@ const Product = () => {
                         
                         <div className="field">
                             <label htmlFor="description">Description</label>
-                            <InputTextarea id="description" value={product.description} onChange={(e) => onInputChange(e, 'description')} required rows={3} cols={20} />
+                            {/* <InputTextarea id="description" value={product.description} onChange={(e) => onInputChange(e, 'description')} required rows={3} cols={20} /> */}
+                            <Editor value={product.description} onTextChange={(e) => setProduct({...product,description:e.htmlValue})} style={{ height: '320px' }} />
                         </div>
 
                         <div className="field">
